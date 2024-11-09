@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateProfile,
 } from "@firebase/auth";
 import { FIREBASE_AUTH } from "../config/firebaseConfig";
 import AuthScreen from "./AuthScreen";
@@ -37,11 +38,9 @@ const Login = () => {
   };
 
   const handleAuthentication = async () => {
-    if (!isLogin) {
-      if (password !== confirmPassword) {
-        Alert.alert("Error", "Password and Confirm Password must be the same.");
-        return;
-      }
+    if (!isLogin && password !== confirmPassword) {
+      Alert.alert("Error", "Password and Confirm Password must be the same.");
+      return;
     }
 
     try {
@@ -54,8 +53,21 @@ const Login = () => {
           await signInWithEmailAndPassword(auth, email, password);
           console.log("User signed in successfully!");
         } else {
-          await createUserWithEmailAndPassword(auth, email, password);
+          // Sign Up: Buat user baru
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
           console.log("User created successfully!");
+
+          // Update profile dengan username
+          await updateProfile(userCredential.user, {
+            displayName: username,
+          });
+          console.log("Username set successfully!");
+          setIsLogin(true); // Beralih ke mode Sign In setelah Sign Up berhasil
+          resetFields(); // Reset fields untuk halaman Sign In
         }
       }
     } catch (error) {

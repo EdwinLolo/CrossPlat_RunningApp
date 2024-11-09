@@ -8,7 +8,10 @@ const Profile = ({ user, handleAuthentication }) => {
     <View style={styles.authContainer}>
       <Text style={styles.title}>Welcome</Text>
       {user ? (
-        <Text style={styles.emailText}>{user.email}</Text>
+        <View>
+          <Text style={styles.emailText}>{user.email}</Text>
+          <Text style={styles.emailText}>{user.displayName}</Text>
+        </View>
       ) : (
         <Text style={styles.emailText}>User not available</Text>
       )}
