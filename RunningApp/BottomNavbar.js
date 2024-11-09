@@ -30,7 +30,7 @@ export default function BottomNavbar({ user, handleAuthentication }) {
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        // component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -52,7 +52,9 @@ export default function BottomNavbar({ user, handleAuthentication }) {
             );
           },
         }}
-      />
+      >
+        {() => <HomeScreen user={user} />}
+      </Tab.Screen>
       <Tab.Screen
         name="History"
         component={HistoryScreen}

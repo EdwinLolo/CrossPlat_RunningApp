@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomNavbar from "./BottomNavbar";
 import SplashScreen from "./Pages/Splash";
 import Login from "./Pages/Login";
+import Community from "./Pages/Community";
+import Tracking from "./Pages/Tracking";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +36,18 @@ export default function App() {
         <Stack.Screen
           name="BottomNavbar"
           component={BottomNavbar}
+          options={{ headerShown: false }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="Community"
+          component={Community}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="Tracking"
+          component={Tracking}
           options={{ headerShown: true }}
           style={{ backgroundColor: "#FFFFFF" }}
         />

@@ -1,10 +1,30 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-const HomeScreen = () => {
+const HomeScreen = ({ user }) => {
+  const navigation = useNavigation();
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <Text>Hello,{user.displayName}</Text>
+      <Text>Beginner</Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Community", {
+            user: { uid: user.uid, displayName: user.displayName }, // Hanya kirim uid dan displayName
+          })
+        }
+        style={{ backgroundColor: "red" }}
+      >
+        <Text style={{ color: "white" }}>Community</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Tracking")}
+        style={{ backgroundColor: "black" }}
+      >
+        <Text style={{ color: "white" }}>Tracking</Text>
+      </TouchableOpacity>
     </View>
   );
 };
