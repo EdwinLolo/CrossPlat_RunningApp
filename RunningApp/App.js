@@ -9,6 +9,8 @@ import Login from "./Pages/Login";
 import Community from "./Pages/Community";
 import Tracking from "./Pages/Tracking";
 import ShowCommunity from "./Pages/ShowCommunity";
+import CommunityDetail from "./Components/CommunityDetail";
+import AddCommunityDetail from "./Components/AddCommunityDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +57,18 @@ export default function App() {
         <Stack.Screen
           name="Tracking"
           component={Tracking}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="CommunityDetail"
+          component={CommunityDetail}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="AddCommunityDetail"
+          component={AddCommunityDetail}
           options={{ headerShown: true }}
           style={{ backgroundColor: "#FFFFFF" }}
         />

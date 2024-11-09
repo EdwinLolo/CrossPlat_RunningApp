@@ -9,10 +9,9 @@ const ShowCommunity = () => {
   const route = useRoute();
   const { uid, displayName } = route.params?.user || {};
 
-  const [communities, setCommunities] = useState([]); // State untuk menyimpan data komunitas
+  const [communities, setCommunities] = useState([]);
 
   useEffect(() => {
-    // Fungsi untuk mengambil data komunitas dari Firestore
     const fetchCommunities = async () => {
       try {
         const querySnapshot = await getDocs(
@@ -47,19 +46,27 @@ const ShowCommunity = () => {
       <View style={styles.communityList}>
         <Text style={styles.title}>Community Details</Text>
         {communities.map((community) => (
-          <View key={community.id} style={styles.communityItem}>
-            {community.logo ? (
-              <Image source={{ uri: community.logo }} style={styles.logo} />
-            ) : (
-              <Text>No Logo Available</Text>
-            )}
+          <TouchableOpacity
+            key={community.id}
+            style={styles.communityItem}
+            onPress={() =>
+              navigation.navigate("CommunityDetail", {
+                communityId: community.id,
+                communityName: community.name,
+                isAdmin: community.adminId === uid,
+              })
+            }
+          >
             <Text style={styles.communityTitle}>
               Community: {community.name}
             </Text>
             <Text>Location: {community.location}</Text>
             <Text>Description: {community.description}</Text>
             <Text>Admin: {community.adminName}</Text>
-          </View>
+            {community.logo && (
+              <Image source={{ uri: community.logo }} style={styles.logo} />
+            )}
+          </TouchableOpacity>
         ))}
       </View>
     </View>
