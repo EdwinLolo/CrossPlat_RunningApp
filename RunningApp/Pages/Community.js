@@ -13,6 +13,7 @@ import { FIREBASE_DB } from "../config/firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute } from "@react-navigation/native";
+import { Title } from "react-native-paper";
 
 const Community = () => {
   const route = useRoute();
@@ -58,7 +59,7 @@ const Community = () => {
     try {
       // Menyimpan komunitas baru ke Firestore
       await addDoc(collection(FIREBASE_DB, "communitiesCrossPlat"), {
-        name: communityName,
+        Title: communityName,
         location: location,
         description: description,
         logo: logo, // URL logo gambar

@@ -10,7 +10,7 @@ const HomeScreen = ({ user }) => {
       <Text>Beginner</Text>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("Community", {
+          navigation.navigate("ShowCommunity", {
             user: { uid: user.uid, displayName: user.displayName }, // Hanya kirim uid dan displayName
           })
         }

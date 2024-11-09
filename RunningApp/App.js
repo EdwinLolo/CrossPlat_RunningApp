@@ -8,6 +8,7 @@ import SplashScreen from "./Pages/Splash";
 import Login from "./Pages/Login";
 import Community from "./Pages/Community";
 import Tracking from "./Pages/Tracking";
+import ShowCommunity from "./Pages/ShowCommunity";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,12 @@ export default function App() {
         <Stack.Screen
           name="Community"
           component={Community}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="ShowCommunity"
+          component={ShowCommunity}
           options={{ headerShown: true }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
