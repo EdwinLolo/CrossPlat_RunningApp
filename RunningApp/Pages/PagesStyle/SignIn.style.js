@@ -4,9 +4,10 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // padding: 16,
+    // marginTop: 50,
     backgroundColor: "#f0f0f0",
   },
   authContainer: {

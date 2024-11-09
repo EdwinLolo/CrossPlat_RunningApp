@@ -1,5 +1,5 @@
 {
-  "name": "edwinfedoralolo_69568",
+  "name": "RunningApp",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
   "scripts": {
@@ -11,6 +11,8 @@
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
     "@expo/vector-icons": "^14.0.4",
+    "@firebase/auth": "^1.8.0",
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-firebase/app": "^21.4.0",
     "@react-native-firebase/auth": "^21.4.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
