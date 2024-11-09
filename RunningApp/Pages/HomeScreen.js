@@ -25,6 +25,13 @@ const HomeScreen = ({ user }) => {
       >
         <Text style={{ color: "white" }}>Tracking</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RunHistory")}
+        style={{ backgroundColor: "blue" }}
+      >
+        <Text style={{ color: "white" }}>RunHistory</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -11,6 +11,8 @@ import Tracking from "./Pages/Tracking";
 import ShowCommunity from "./Pages/ShowCommunity";
 import CommunityDetail from "./Components/CommunityDetail";
 import AddCommunityDetail from "./Components/AddCommunityDetail";
+import RunHistory from "./Pages/RunHistory";
+import RunHistoryDetail from "./Pages/RunHistoryDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,10 +21,10 @@ export default function App() {
     <NavigationContainer>
       {/* <StatusBar backgroundColor="#1e1e1e" barStyle="dark-content" /> */}
       <Stack.Navigator
-        screenOptions={{
-          headerStyle: { backgroundColor: "#FFFFFF" },
-          headerTintColor: "#000000",
-        }}
+      // screenOptions={{
+      //   headerStyle: { backgroundColor: "#FFFFFF" },
+      //   headerTintColor: "#000000",
+      // }}
       >
         <Stack.Screen
           name="Splash"
@@ -69,6 +71,18 @@ export default function App() {
         <Stack.Screen
           name="AddCommunityDetail"
           component={AddCommunityDetail}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="RunHistory"
+          component={RunHistory}
+          options={{ headerShown: true }}
+          style={{ backgroundColor: "#FFFFFF" }}
+        />
+        <Stack.Screen
+          name="RunHistoryDetail"
+          component={RunHistoryDetail}
           options={{ headerShown: true }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
