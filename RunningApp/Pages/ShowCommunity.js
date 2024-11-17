@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ScrollView,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
@@ -43,7 +50,7 @@ const ShowCommunity = () => {
         <Text style={styles.addButtonText}>Add Community</Text>
       </TouchableOpacity>
 
-      <View style={styles.communityList}>
+      <ScrollView style={styles.communityList}>
         <Text style={styles.title}>Community Details</Text>
         {communities.map((community) => (
           <TouchableOpacity
@@ -68,7 +75,7 @@ const ShowCommunity = () => {
             )}
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
