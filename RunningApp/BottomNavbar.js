@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import HomeScreen from "./Pages/HomeScreen";
 import HistoryScreen from "./Pages/History";
@@ -16,12 +17,15 @@ const screenOptions = {
   tabBarShowLabel: false,
   tabBarStyle: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 25,
+    left: 30,
+    right: 30,
     elevation: 0,
-    height: 60,
-    backgroundColor: "#ffffff",
+    height: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 15,
+    backgroundColor: "#AAC7D7",
   },
 };
 
@@ -38,16 +42,16 @@ export default function BottomNavbar({ user, handleAuthentication }) {
                 <Entypo
                   name="home"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#5D63D1" : "#ffffff"}
                 />
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 12,
                     color: focused ? "#16247d" : "#111",
                   }}
                 >
                   Home
-                </Text>
+                </Text> */}
               </View>
             );
           },
@@ -65,22 +69,22 @@ export default function BottomNavbar({ user, handleAuthentication }) {
                 <MaterialCommunityIcons
                   name="history"
                   size={24}
-                  color="black"
+                  color={focused ? "#5D63D1" : "#ffffff"}
                 />
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 12,
                     color: focused ? "#16247d" : "#111",
                   }}
                 >
                   Riwayat
-                </Text>
+                </Text> */}
               </View>
             );
           },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Bayar"
         component={Bayar}
         options={{
@@ -121,8 +125,8 @@ export default function BottomNavbar({ user, handleAuthentication }) {
             );
           },
         }}
-      />
-      <Tab.Screen
+      /> */}
+      {/* <Tab.Screen
         name="Notif"
         component={Notif}
         options={{
@@ -142,21 +146,22 @@ export default function BottomNavbar({ user, handleAuthentication }) {
             );
           },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <Image
-                source={require("./assets/profile.png")}
-                style={{ width: 24, height: 24 }}
+              <Ionicons
+                name="person"
+                size={24}
+                color={focused ? "#5D63D1" : "#ffffff"}
               />
-              <Text
+              {/* <Text
                 style={{ fontSize: 12, color: focused ? "#16247d" : "#111" }}
               >
                 Profil
-              </Text>
+              </Text> */}
             </View>
           ),
         }}
