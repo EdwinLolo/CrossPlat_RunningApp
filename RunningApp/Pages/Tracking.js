@@ -23,13 +23,14 @@ const haversine = (coords1, coords2) => {
 };
 
 // Fungsi untuk menyimpan riwayat perjalanan ke Firestore
-const saveHistory = async (route, distance, uid) => {
+const saveHistory = async (route, distance, time, calories, uid) => {
   try {
-    // Menyimpan riwayat di Firestore
     const historyRef = collection(FIREBASE_DB, "users", uid, "history");
     await addDoc(historyRef, {
-      route,
+      route, // Menyimpan array route
       distance,
+      time,
+      calories,
       timestamp: new Date(),
     });
     console.log("History saved successfully");
@@ -43,6 +44,9 @@ const Tracking = () => {
   const [route, setRoute] = useState([]);
   const [distance, setDistance] = useState(0);
   const [tracking, setTracking] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0); // dalam detik
+  const [calories, setCalories] = useState(0);
   const navigation = useNavigation();
   const routeParams = useRoute().params;
   const { uid, displayName } = routeParams?.user || {}; // Mengambil uid dan displayName dari params
@@ -51,6 +55,7 @@ const Tracking = () => {
     let locationSubscription;
 
     if (tracking) {
+      setStartTime(new Date()); // Mencatat waktu mulai pelacakan
       (async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
@@ -90,16 +95,53 @@ const Tracking = () => {
     };
   }, [tracking]);
 
+  useEffect(() => {
+    if (tracking && startTime) {
+      const interval = setInterval(() => {
+        setElapsedTime((prevTime) => prevTime + 1); // Menghitung waktu dalam detik
+      }, 1000); // Mengupdate setiap detik
+
+      return () => clearInterval(interval);
+    }
+  }, [tracking, startTime]);
+
+  // Menghitung pace (menit per km)
+  const calculatePace = () => {
+    if (elapsedTime === 0 || distance === 0) return 0;
+    const paceInMinutes = elapsedTime / 60 / distance; // waktu dalam menit per kilometer
+    return paceInMinutes;
+  };
+
+  // Fungsi untuk menghitung kalori yang terbakar (menggunakan rumus sederhana)
+  const calculateCalories = () => {
+    if (elapsedTime === 0) return 0; // Pastikan waktu sudah cukup sebelum menghitung kalori
+    const MET = 8; // MET untuk berlari dengan kecepatan moderat
+    const hours = elapsedTime / 3600; // waktu dalam jam
+    return MET * 55 * hours; // Kalori yang terbakar
+  };
+
+  // Perbarui kalori secara real-time setiap detik
+  useEffect(() => {
+    if (tracking) {
+      const totalCalories = calculateCalories();
+      setCalories(totalCalories); // Set kalori setiap detik
+    }
+  }, [elapsedTime, tracking]); // Mengupdate kalori setiap kali elapsedTime berubah
+
   const startTracking = () => {
     setRoute([]); // Reset rute ketika mulai pelacakan baru
     setDistance(0); // Reset jarak
+    setElapsedTime(0); // Reset waktu
+    setCalories(0); // Reset kalori
     setTracking(true); // Mulai pelacakan
   };
 
   const stopTracking = () => {
     if (route.length > 0) {
       setTracking(false);
-      saveHistory(route, distance, uid); // Menyimpan riwayat ke Firestore saat pelacakan berhenti
+      const pace = calculatePace();
+      const totalCalories = calculateCalories();
+      saveHistory(route, distance, elapsedTime, totalCalories, uid); // Menyimpan riwayat ke Firestore
     } else {
       alert("Belum ada data untuk disimpan. Mulai tracking terlebih dahulu.");
     }
@@ -110,8 +152,8 @@ const Tracking = () => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: location ? location.latitude : 37.78825, // Nilai default yang lebih aman
-          longitude: location ? location.longitude : -122.4324,
+          latitude: location ? location.latitude : -6.2666, // Nilai default yang lebih aman
+          longitude: location ? location.longitude : 106.605,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
@@ -124,6 +166,11 @@ const Tracking = () => {
       </MapView>
       <View style={styles.infoContainer}>
         <Text>Total Jarak: {distance.toFixed(2)} km</Text>
+        <Text>Pace: {calculatePace().toFixed(2)} menit/km</Text>
+        <Text>
+          Waktu: {Math.floor(elapsedTime / 60)} menit {elapsedTime % 60} detik
+        </Text>
+        <Text>Kalori Terbakar: {calories.toFixed(2)} kcal</Text>
         <Button title="Start" onPress={startTracking} disabled={tracking} />
         <Button title="Stop" onPress={stopTracking} disabled={!tracking} />
         <Button

@@ -31,11 +31,7 @@ const HomeScreen = ({ user }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("RunHistory", {
-            user: { uid: user.uid, displayName: user.displayName }, // Hanya kirim uid dan displayName
-          })
-        }
+        onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
         style={{ backgroundColor: "blue" }}
       >
         <Text style={{ color: "white" }}>RunHistory</Text>
