@@ -2,13 +2,50 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Polyline, Marker } from "react-native-maps";
-import haversine from "haversine";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { doc, collection, addDoc } from "firebase/firestore";
+import { FIREBASE_DB } from "../config/firebaseConfig"; // Pastikan Anda mengimpor firebase config dengan benar
 
-const Tracking = ({ setHistory, history, navigation }) => {
+// Fungsi untuk menghitung jarak menggunakan rumus Haversine
+const haversine = (coords1, coords2) => {
+  const R = 6371; // Radius bumi dalam kilometer
+  const dLat = (coords2.latitude - coords1.latitude) * (Math.PI / 180);
+  const dLon = (coords2.longitude - coords1.longitude) * (Math.PI / 180);
+  const lat1 = coords1.latitude * (Math.PI / 180);
+  const lat2 = coords2.latitude * (Math.PI / 180);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // Dalam kilometer
+};
+
+// Fungsi untuk menyimpan riwayat perjalanan ke Firestore
+const saveHistory = async (route, distance, uid) => {
+  try {
+    // Menyimpan riwayat di Firestore
+    const historyRef = collection(FIREBASE_DB, "users", uid, "history");
+    await addDoc(historyRef, {
+      route,
+      distance,
+      timestamp: new Date(),
+    });
+    console.log("History saved successfully");
+  } catch (error) {
+    console.error("Error saving history: ", error);
+  }
+};
+
+const Tracking = () => {
   const [location, setLocation] = useState(null);
   const [route, setRoute] = useState([]);
   const [distance, setDistance] = useState(0);
   const [tracking, setTracking] = useState(false);
+  const navigation = useNavigation();
+  const routeParams = useRoute().params;
+  const { uid, displayName } = routeParams?.user || {}; // Mengambil uid dan displayName dari params
 
   useEffect(() => {
     let locationSubscription;
@@ -54,19 +91,15 @@ const Tracking = ({ setHistory, history, navigation }) => {
   }, [tracking]);
 
   const startTracking = () => {
-    setRoute([]);
-    setDistance(0);
-    setTracking(true);
+    setRoute([]); // Reset rute ketika mulai pelacakan baru
+    setDistance(0); // Reset jarak
+    setTracking(true); // Mulai pelacakan
   };
 
   const stopTracking = () => {
     if (route.length > 0) {
       setTracking(false);
-      if (typeof setHistory === "function") {
-        setHistory((prevHistory) => [...(prevHistory || []), { route, distance }]);
-      } else {
-        console.warn("setHistory is not a function.");
-      }
+      saveHistory(route, distance, uid); // Menyimpan riwayat ke Firestore saat pelacakan berhenti
     } else {
       alert("Belum ada data untuk disimpan. Mulai tracking terlebih dahulu.");
     }
@@ -93,7 +126,10 @@ const Tracking = ({ setHistory, history, navigation }) => {
         <Text>Total Jarak: {distance.toFixed(2)} km</Text>
         <Button title="Start" onPress={startTracking} disabled={tracking} />
         <Button title="Stop" onPress={stopTracking} disabled={!tracking} />
-        <Button title="View Run History" onPress={() => navigation.navigate("RunHistory")} />
+        <Button
+          title="View Run History"
+          onPress={() => navigation.navigate("RunHistory", { uid: uid })}
+        />
       </View>
     </View>
   );

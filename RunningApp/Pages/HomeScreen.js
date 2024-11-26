@@ -20,14 +20,22 @@ const HomeScreen = ({ user }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Tracking")}
+        onPress={() =>
+          navigation.navigate("Tracking", {
+            user: { uid: user.uid, displayName: user.displayName }, // Hanya kirim uid dan displayName
+          })
+        }
         style={{ backgroundColor: "black" }}
       >
         <Text style={{ color: "white" }}>Tracking</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("RunHistory")}
+        onPress={() =>
+          navigation.navigate("RunHistory", {
+            user: { uid: user.uid, displayName: user.displayName }, // Hanya kirim uid dan displayName
+          })
+        }
         style={{ backgroundColor: "blue" }}
       >
         <Text style={{ color: "white" }}>RunHistory</Text>
