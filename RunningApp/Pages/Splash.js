@@ -9,7 +9,7 @@ const Splash = ({ navigation }) => {
   useEffect(() => {
     Animated.timing(backgroundFade, {
       toValue: 1,
-      duration: 2000,
+      duration: 1000,
       useNativeDriver: true,
     }).start(() => {
       Animated.timing(logoFade, {
@@ -25,7 +25,7 @@ const Splash = ({ navigation }) => {
           }).start(() => {
             Animated.timing(backgroundFade, {
               toValue: 0,
-              duration: 1350,
+              duration: 500,
               useNativeDriver: true,
             }).start(() => {
               navigation.navigate("Main");
@@ -42,7 +42,7 @@ const Splash = ({ navigation }) => {
     >
       <Animated.Image
         style={[splash_styles.logo, { opacity: logoFade }]}
-        source={require("../assets/Logo_UMN.png")}
+        source={require("../assets/Logo_LestRun.png")}
       />
     </Animated.View>
   );

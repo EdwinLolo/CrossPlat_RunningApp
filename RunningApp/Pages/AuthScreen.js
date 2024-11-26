@@ -17,57 +17,62 @@ const AuthScreen = ({
 }) => {
   return (
     <View style={styles.authContainer}>
-      <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
+      <View style={styles.authUI}>
+        <Text style={styles.title}>
+          {isLogin
+            ? "Welcome Back! Glad to see you. Again!"
+            : "Hello! Register to get started"}
+        </Text>
 
-      {!isLogin && ( // Input username hanya ditampilkan di Sign Up
+        {!isLogin && ( // Input username hanya ditampilkan di Sign Up
+          <TextInput
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Username"
+            autoCapitalize="none"
+          />
+        )}
+
         <TextInput
           style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Username"
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
           autoCapitalize="none"
         />
-      )}
 
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-      />
-
-      {!isLogin && ( // Input confirm password hanya ditampilkan di Sign Up
         <TextInput
           style={styles.input}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          placeholder="Confirm Password"
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
           secureTextEntry
         />
-      )}
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title={isLogin ? "Sign In" : "Sign Up"}
-          onPress={handleAuthentication}
-          color="#3498db"
-        />
+        {!isLogin && ( // Input confirm password hanya ditampilkan di Sign Up
+          <TextInput
+            style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="Confirm Password"
+            secureTextEntry
+          />
+        )}
+
+        <View style={styles.buttonContainer}>
+          <Button
+            title={isLogin ? "Login" : "Register"}
+            onPress={handleAuthentication}
+            color="#000000FF"
+          />
+        </View>
       </View>
-
       <View style={styles.bottomContainer}>
         <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>
           {isLogin
-            ? "Need an account? Sign Up"
-            : "Already have an account? Sign In"}
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Login Here"}
         </Text>
       </View>
     </View>
