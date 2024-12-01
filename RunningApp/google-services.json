@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "742493209788",
+    "project_id": "edwinfedoralolouts",
+    "storage_bucket": "edwinfedoralolouts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742493209788:android:eb12622322ddd37f3a3cb9",
+        "android_client_info": {
+          "package_name": "com.anonymous.EdwinFedoraLolo_69568"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742493209788-nu9oticm2oi8ddpe7s5cdrjjdqf6scog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF5RS7spJKRxXp2o-uyWb9c2rJ8VmDz3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742493209788-nu9oticm2oi8ddpe7s5cdrjjdqf6scog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742493209788:android:dcc655abbc39c1d03a3cb9",
+        "android_client_info": {
+          "package_name": "com.example.if570_lab_uts_edwinfedoralolo_69568"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742493209788-nu9oticm2oi8ddpe7s5cdrjjdqf6scog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF5RS7spJKRxXp2o-uyWb9c2rJ8VmDz3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742493209788-nu9oticm2oi8ddpe7s5cdrjjdqf6scog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
