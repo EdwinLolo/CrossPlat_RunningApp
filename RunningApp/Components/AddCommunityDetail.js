@@ -8,9 +8,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { FIREBASE_DB } from "../config/firebaseConfig";
+import { FIREBASE_DB, FIREBASE_STORAGE } from "../config/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const AddCommunityDetail = () => {
@@ -22,7 +23,9 @@ const AddCommunityDetail = () => {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  // Pick an image from the gallery
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -36,6 +39,20 @@ const AddCommunityDetail = () => {
     }
   };
 
+  // Upload image to Firebase Storage and return the download URL
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const filename = uri.split("/").pop(); // Get file name from URI
+
+    const storageRef = ref(FIREBASE_STORAGE, `postImages/${filename}`);
+    await uploadBytes(storageRef, blob);
+
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  };
+
+  // Handle adding a new post to Firestore
   const handleAddPost = async () => {
     if (
       title.trim() === "" ||
@@ -47,18 +64,27 @@ const AddCommunityDetail = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
+      // Upload image and get the URL
+      const imageUrl = await uploadImage(image);
+
+      // Add post to Firestore
       await addDoc(collection(FIREBASE_DB, "posts"), {
         communityId: communityId,
         title: title,
         description: description,
         location: location,
-        image: image,
+        image: imageUrl, // Save the image URL from Firebase Storage
         createdAt: new Date(),
       });
-      navigation.goBack(); // Kembali ke halaman sebelumnya setelah postingan ditambahkan
+
+      navigation.goBack(); // Go back to the previous screen after posting
     } catch (error) {
       console.error("Error adding post:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,7 +117,11 @@ const AddCommunityDetail = () => {
           <Text style={styles.imageText}>Pick an Image</Text>
         )}
       </TouchableOpacity>
-      <Button title="Add Post" onPress={handleAddPost} />
+      <Button
+        title={loading ? "Adding Post..." : "Add Post"}
+        onPress={handleAddPost}
+        disabled={loading}
+      />
     </View>
   );
 };
@@ -124,6 +154,9 @@ const styles = StyleSheet.create({
   previewImage: {
     width: "100%",
     height: "100%",
+  },
+  imageText: {
+    color: "#666",
   },
 });
 
