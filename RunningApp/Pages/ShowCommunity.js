@@ -65,7 +65,7 @@ const ShowCommunity = () => {
             }
           >
             <Text style={styles.communityTitle}>
-              Community: {community.name}
+              Community: {community.Title}
             </Text>
             <Text>Location: {community.location}</Text>
             <Text>Description: {community.description}</Text>
