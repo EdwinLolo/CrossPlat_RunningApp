@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
   bluebg: {
     width: "100%",
     height: "24%",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
     justifyContent: "center",
     alignItems: "center",
     // maxWidth: 400,
