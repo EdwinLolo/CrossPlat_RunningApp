@@ -1,23 +1,28 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
-  const [photoUri, setPhotoUri] = useState(null); // State untuk menyimpan URI foto input
+  const [photoUri, setPhotoUri] = useState(null); 
 
-  // Fungsi untuk meng-handle pemilihan gambar dari galeri atau mengambil foto
-  const handleImageSelect = (uri) => {
-    setPhotoUri(uri); // Mengupdate URI foto
+  // Fungsi untuk meng-handle pemilihan gambar dari galeri atau kamera
+  const handleImageSelect = () => {
+    launchImageLibrary({ mediaType: 'photo', quality: 0.5 }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        setPhotoUri(response.assets[0].uri);
+      }
+    });
   };
-  
+
   return (
     <View style={styles.container}>
-      {/* Header foto */}
+      {/* Header dengan gambar atau avatar dan input foto */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => handleImageSelect('https://media.suara.com/pictures/653x366/2023/03/30/27240-iu-promosikan-film-broker-di-busan-international-film-festival.jpg')}>
+        <TouchableOpacity onPress={handleImageSelect}>
           <Image 
-            source={{ uri: photoUri || 'https://media.suara.com/pictures/653x366/2023/03/30/27240-iu-promosikan-film-broker-di-busan-international-film-festival.jpg' }}  // Gunakan gambar default atau gambar input pengguna
+            source={{ uri: photoUri || 'https://koreajoongangdaily.joins.com/data/photo/2023/10/09/b37d6ba6-a639-4674-8594-f8e96bc0587e.jpg' }}  // Gunakan gambar default atau gambar input pengguna
             style={styles.avatar}
           />
         </TouchableOpacity>
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 40,
-    marginRight: 15, 
+    marginRight: 15,  
   },
   textContainer: {
     flex: 1,
