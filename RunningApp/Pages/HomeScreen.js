@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 50,
     justifyContent: "center",
     alignItems: "center",
-    // maxWidth: 400,
     backgroundColor: "#AAC7D8",
   },
   avatar: {
