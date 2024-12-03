@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     marginBottom: 20,
+    marginRight: 10,
     color: "#ffffff",
   },
   userProfileContainer: {
@@ -34,15 +35,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     marginBottom: 10,
+    marginLeft: 65,
+
   },
   emailText: {
     fontSize: 20,
     marginBottom: 10,
     color: "#ffffff",
     textAlign: "center",
-  },
-  button: {
-    marginTop: 10,
   },
   input: {
     backgroundColor: "white",
@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginBottom: 10,
+  },
+  logout: {
+    backgroundColor: '#e74c3c',
+    borderRadius: 10,
+    padding: 10,
   },
 });
 
