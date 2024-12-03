@@ -26,13 +26,13 @@ const Profile = ({ user, handleAuthentication }) => {
         )}
       </View>
       <ProgressCard />
-      <ProfileOptions />  
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={() => console.log('Logout Pressed')}
-        >
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+      <ProfileOptions />
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={handleAuthentication}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
