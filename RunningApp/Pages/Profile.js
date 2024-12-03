@@ -1,6 +1,6 @@
 // src/screens/Profile.js
 import React from "react";
-import { View, Text, Button, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./PagesStyle/Profile.style.js";
 import ProfileOptions from "../Components/ProfileOptions.js";
 import ProgressCard from "../Components/ProgressCard.js";
@@ -26,12 +26,13 @@ const Profile = ({ user, handleAuthentication }) => {
         )}
       </View>
       <ProgressCard />
-      <ProfileOptions />
-      <Button
-        style={styles.logout}
-        title="Logout"
-        onPress={handleAuthentication}
-      />
+      <ProfileOptions />  
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => console.log('Logout Pressed')}
+        >
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
     </View>
   );
 };

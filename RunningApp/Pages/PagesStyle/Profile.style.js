@@ -55,10 +55,26 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: 10,
   },
-  logout: {
-    backgroundColor: '#e74c3c',
-    borderRadius: 10,
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,	
+  },
+  logoutButton: {
+    backgroundColor: 'black',
+    borderRadius: 15,
     padding: 10,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute', 
+    bottom: 70, 
+    left: '50%', 
+    transform: [{ translateX: -50 }], 
+  },
+
+  buttonText: {
+    color: 'white', 
   },
 });
 
