@@ -5,7 +5,7 @@ import React from "react";
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Hello,{user.displayName}</Text>
       <Text>Beginner</Text>
       <TouchableOpacity
@@ -39,5 +39,14 @@ const HomeScreen = ({ user }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start', 
+    paddingTop: 50, 
+    paddingHorizontal: 20, 
+  }
+})
 
 export default HomeScreen;
