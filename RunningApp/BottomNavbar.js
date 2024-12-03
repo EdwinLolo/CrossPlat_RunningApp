@@ -7,8 +7,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import HomeScreen from "./Pages/HomeScreen";
 import HistoryScreen from "./Pages/History";
-import Bayar from "./Pages/Bayar";
-import Notif from "./Pages/Notif";
+import RunHistory from "./Pages/RunHistory";
 import Profile from "./Pages/Profile";
 
 const Tab = createBottomTabNavigator();
@@ -60,8 +59,7 @@ export default function BottomNavbar({ user, handleAuthentication }) {
         {() => <HomeScreen user={user} />}
       </Tab.Screen>
       <Tab.Screen
-        name="History"
-        component={HistoryScreen}
+        name="RunHistory"
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -71,19 +69,13 @@ export default function BottomNavbar({ user, handleAuthentication }) {
                   size={24}
                   color={focused ? "#5D63D1" : "#ffffff"}
                 />
-                {/* <Text
-                  style={{
-                    fontSize: 12,
-                    color: focused ? "#16247d" : "#111",
-                  }}
-                >
-                  Riwayat
-                </Text> */}
               </View>
             );
           },
         }}
-      />
+      >
+        {() => <RunHistory route={{ params: { uid: user.uid } }} />}
+      </Tab.Screen>
       {/* <Tab.Screen
         name="Bayar"
         component={Bayar}
