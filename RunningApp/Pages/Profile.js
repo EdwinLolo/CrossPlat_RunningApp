@@ -1,11 +1,10 @@
-// src/screens/Profile.js
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./PagesStyle/Profile.style.js";
 import ProfileOptions from "../Components/ProfileOptions.js";
 import ProgressCard from "../Components/ProgressCard.js";
 
-const Profile = ({ user, handleAuthentication }) => {
+const Profile = ({ user = {}, handleAuthentication = () => {} }) => {
   return (
     <View style={styles.ProfileContainer}>
       <View style={styles.UserContainer}>

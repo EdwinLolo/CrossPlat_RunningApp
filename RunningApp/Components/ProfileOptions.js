@@ -1,21 +1,41 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { ListItem } from "react-native-elements";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { FontAwesome6, Ionicons, FontAwesome } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
   listItemContainer: {
     width: "80%",
-    backgroundCOlor: "white",
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
   },
+  listItemTitle: {
+    marginLeft: 10,
+  },
 });
+
+const CustomListItem = ({ title, iconLibrary, iconName, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.listItemContainer}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        {iconLibrary === "FontAwesome6" && (
+          <FontAwesome6 name={iconName} size={24} color="black" />
+        )}
+        {iconLibrary === "Ionicons" && (
+          <Ionicons name={iconName} size={24} color="gray" />
+        )}
+        {iconLibrary === "FontAwesome" && (
+          <FontAwesome name={iconName} size={24} color="yellow" />
+        )}
+        <Text style={styles.listItemTitle}>{title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 const ProfileOptions = () => {
   const optionsData = [
     {
@@ -48,30 +68,13 @@ const ProfileOptions = () => {
     <View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         {optionsData.map((item, index) => (
-          <ListItem
+          <CustomListItem
             key={index}
-            bottomDivider
+            title={item.title}
+            iconLibrary={item.iconLibrary}
+            iconName={item.iconName}
             onPress={item.onPress}
-            containerStyle={styles.listItemContainer}
-          >
-            <ListItem.Content>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                {item.iconLibrary === "FontAwesome6" && (
-                  <FontAwesome6 name={item.iconName} size={24} color="black" />
-                )}
-                {item.iconLibrary === "Ionicons" && (
-                  <Ionicons name={item.iconName} size={24} color="gray" />
-                )}
-                {item.iconLibrary === "FontAwesome" && (
-                  <FontAwesome name={item.iconName} size={24} color="yellow" />
-                )}
-                <ListItem.Title style={{ marginLeft: 10 }}>
-                  {item.title}
-                </ListItem.Title>
-              </View>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
+          />
         ))}
       </View>
     </View>

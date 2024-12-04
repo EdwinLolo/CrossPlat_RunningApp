@@ -59,7 +59,7 @@ export default function BottomNavbar({ user, handleAuthentication }) {
         {() => <HomeScreen user={user} />}
       </Tab.Screen>
       <Tab.Screen
-        name="RunHistory"
+        name="History"
         options={{
           tabBarIcon: ({ focused }) => {
             return (

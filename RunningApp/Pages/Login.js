@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Alert } from "react-native";
+import { ScrollView, Alert, View, FlatList } from "react-native";
 import {
   getAuth,
   signOut,
@@ -82,7 +82,7 @@ const Login = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <>
       {user ? (
         <BottomNavbar user={user} handleAuthentication={handleAuthentication} />
       ) : (
@@ -100,7 +100,7 @@ const Login = () => {
           setConfirmPassword={setConfirmPassword}
         />
       )}
-    </ScrollView>
+    </>
   );
 };
 
