@@ -40,34 +40,36 @@ const HomeScreen = ({ user }) => {
         </View>
 
         {/* Tombol navigasi */}
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("ShowCommunity", {
-              user: { uid: user.uid, displayName: user.displayName },
-            })
-          }
-          style={styles.buttonRed}
-        >
-          <Text style={styles.buttonText}>Community</Text>
-        </TouchableOpacity>
+        <View style={styles.btncontainer}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ShowCommunity", {
+                user: { uid: user.uid, displayName: user.displayName },
+              })
+            }
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Community</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Tracking", {
-              user: { uid: user.uid, displayName: user.displayName },
-            })
-          }
-          style={styles.buttonBlack}
-        >
-          <Text style={styles.buttonText}>Tracking</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Tracking", {
+                user: { uid: user.uid, displayName: user.displayName },
+              })
+            }
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Tracking</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
-          style={styles.buttonBlue}
-        >
-          <Text style={styles.buttonText}>RunHistory</Text>
-        </TouchableOpacity>
+        </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>RunHistory</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -77,15 +79,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    // paddingTop: 50,
-    // paddingHorizontal: 20,
     backgroundColor: '#f5f5f5',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 30,
     paddingTop: 150,
+    marginTop: 30,
     paddingHorizontal: 20,
   },
   bluebg: {
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   rowContainer: {
-    flexDirection: 'row',  
-    alignItems: 'center',  
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   hello: {
     fontSize: 18,
@@ -124,32 +124,32 @@ const styles = StyleSheet.create({
   levelText: {
     fontSize: 16,
     color: '#ffffff',
-    marginTop: 0,
     paddingHorizontal: 5,
   },
-  buttonRed: {
-    backgroundColor: "red",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
+  btncontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',  
+    alignItems: 'center', 
+    width: '100%',
+    marginTop: 40, 
   },
-  buttonBlack: {
-    backgroundColor: "black",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
+  button: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    marginHorizontal: 10,  
+    padding: 15, 
+    borderRadius: 15,
     alignItems: 'center',
-  },
-  buttonBlue: {
-    backgroundColor: "blue",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "pink",
+    width: 95,
+    height: 95,
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 16,
   },
 });
