@@ -1,7 +1,9 @@
 // src/screens/Profile.js
 import React from "react";
-import { View, Text, Button, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./PagesStyle/Profile.style.js";
+import ProfileOptions from "../Components/ProfileOptions.js";
+import ProgressCard from "../Components/ProgressCard.js";
 
 const Profile = ({ user, handleAuthentication }) => {
   return (
@@ -22,13 +24,15 @@ const Profile = ({ user, handleAuthentication }) => {
         ) : (
           <Text style={styles.emailText}>User not available</Text>
         )}
-        <Button
-          style={styles.logout}
-          title="Logout"
-          onPress={handleAuthentication}
-          color="#e74c3c"
-        />
       </View>
+      <ProgressCard />
+      <ProfileOptions />
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={handleAuthentication}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
