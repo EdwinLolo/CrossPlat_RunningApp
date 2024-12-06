@@ -4,7 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const ProgressCard = () => {
   return (
-    <View style={{ justifyContent: "center", alignItems: "center" }}>
+    <View style={{ justifyContent: "center", alignItems: "center", marginTop: -30 }}>
       <View
         style={{
           backgroundColor: "#f0f0f0",

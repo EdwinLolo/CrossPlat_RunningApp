@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute', 
-    bottom: 70, 
+    bottom: 80, 
     left: '50%', 
     transform: [{ translateX: -50 }], 
   },
