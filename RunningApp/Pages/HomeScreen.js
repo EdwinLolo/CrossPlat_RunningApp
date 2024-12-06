@@ -88,12 +88,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: height * 0.15, // Make padding proportional to screen height
-    paddingHorizontal: width * 0.05, // Make padding proportional to screen width
+    paddingTop: height * 0.15, 
+    paddingHorizontal: width * 0.05, 
   },
   bluebg: {
     width: '100%',
-    height: height * 0.24, // 24% of screen height
+    height: height * 0.24, 
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     justifyContent: 'center',
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
   avatar: {
     width: 60,
     height: 60,
-    borderRadius: 30, // Half of width/height for perfect circle
-    marginRight: 10, // Increased margin for better spacing
+    borderRadius: 30, 
+    marginRight: 10, 
   },
   textContainer: {
     flex: 1,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   greetingText: {
-    fontSize: 22, // Slightly bigger for more emphasis
+    fontSize: 22, 
     fontWeight: 'bold',
     color: '#ffffff',
   },
@@ -153,14 +153,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
-    marginHorizontal: width * 0.05, // Proportional margin
+    marginHorizontal: width * 0.05, 
     padding: 15,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'pink',
-    width: width * 0.2, // 20% of screen width
-    height: width * 0.2, // 20% of screen width (making it square)
+    width: width * 0.2,
+    height: width * 0.2, 
   },
   buttonText: {
     color: 'black',
