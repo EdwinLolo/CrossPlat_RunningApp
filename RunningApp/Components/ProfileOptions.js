@@ -10,10 +10,11 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: 'white',
         padding: 20,
+        marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     listItemContent: {
@@ -76,7 +77,7 @@ const ProfileOptions = () => {
 
     return (
         <View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
                 {optionsData.map((item, index) => (
                     <CustomListItem
                         key={index}
