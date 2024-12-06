@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -64,16 +64,20 @@ const HomeScreen = ({ user }) => {
           </TouchableOpacity>
 
         </View>
+        <View style={styles.RunHisbtn}>
           <TouchableOpacity
             onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
             style={styles.button}
           >
             <Text style={styles.buttonText}>RunHistory</Text>
           </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -84,24 +88,23 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 150,
-    marginTop: 30,
-    paddingHorizontal: 20,
+    paddingTop: height * 0.15, // Make padding proportional to screen height
+    paddingHorizontal: width * 0.05, // Make padding proportional to screen width
   },
   bluebg: {
-    width: "100%",
-    height: "24%",
+    width: '100%',
+    height: height * 0.24, // 24% of screen height
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#AAC7D8",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#AAC7D8',
   },
   avatar: {
     width: 60,
     height: 60,
-    borderRadius: 40,
-    marginRight: 5,
+    borderRadius: 30, // Half of width/height for perfect circle
+    marginRight: 10, // Increased margin for better spacing
   },
   textContainer: {
     flex: 1,
@@ -114,12 +117,12 @@ const styles = StyleSheet.create({
   hello: {
     fontSize: 18,
     paddingLeft: 5,
-    color: "#ffffff",
+    color: '#ffffff',
   },
   greetingText: {
-    fontSize: 18,
+    fontSize: 22, // Slightly bigger for more emphasis
     fontWeight: 'bold',
-    color: "#ffffff",
+    color: '#ffffff',
   },
   levelText: {
     fontSize: 16,
@@ -128,10 +131,21 @@ const styles = StyleSheet.create({
   },
   btncontainer: {
     flexDirection: 'row',
-    justifyContent: 'center',  
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
-    marginTop: 40, 
+    height: height, 
+    position: 'absolute', 
+    top: 0, 
+  },
+  RunHisbtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: height * 1.3,
+    position: 'absolute',
+    top: 0, 
   },
   button: {
     shadowColor: '#000',
@@ -139,17 +153,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
-    marginHorizontal: 10,  
-    padding: 15, 
+    marginHorizontal: width * 0.05, // Proportional margin
+    padding: 15,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "pink",
-    width: 95,
-    height: 95,
+    backgroundColor: 'pink',
+    width: width * 0.2, // 20% of screen width
+    height: width * 0.2, // 20% of screen width (making it square)
   },
   buttonText: {
-    color: "black",
+    color: 'black',
     fontSize: 16,
   },
 });
