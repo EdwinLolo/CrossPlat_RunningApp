@@ -1,18 +1,18 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { launchImageLibrary } from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
   const [photoUri, setPhotoUri] = useState(null);
 
-  const goalDistance = 50; // Total goal distance in km
-  const distanceDone = 35; // Distance done in km
+  const goalDistance = 50; 
+  const distanceDone = 35;
   const distanceLeft = goalDistance - distanceDone;
-  const progress = (distanceDone / goalDistance) * 100; // Percentage done
+  const progress = (distanceDone / goalDistance) * 100; 
 
-  // Fungsi untuk meng-handle pemilihan gambar dari galeri atau kamera
   const handleImageSelect = () => {
     launchImageLibrary({ mediaType: 'photo', quality: 0.5 }, (response) => {
       if (response.assets && response.assets.length > 0) {
@@ -67,6 +67,7 @@ const HomeScreen = ({ user }) => {
 
         {/* Buttons */}
         <View style={styles.btncontainer}>
+          {/* Community Button */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("ShowCommunity", {
@@ -75,9 +76,14 @@ const HomeScreen = ({ user }) => {
             }
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Community</Text>
+            <View style={styles.buttonContent}>
+              <Icon name="home" size={110} color="#AAC7D8" style={styles.icon}/>
+              <Text style={styles.buttonTitle}>Join a Community</Text>
+              <Text style={styles.buttonSubtitle}>Running are more fun when we're together</Text>
+            </View>
           </TouchableOpacity>
 
+          {/* Tracking Button */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Tracking", {
@@ -86,18 +92,25 @@ const HomeScreen = ({ user }) => {
             }
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Tracking</Text>
+            <View style={styles.buttonContent}>
+            <Icon name="home" size={110} color="#AAC7D8" style={styles.icon} />
+            <Text style={styles.buttonTitle}>Tracking</Text>
+              <Text style={styles.buttonSubtitle}>let's increase productivity and achive your weekly progress</Text>
+            </View>
           </TouchableOpacity>
         </View>
 
+        {/* RunHistory Button */}
         <View style={styles.RunHisbtn}>
           <TouchableOpacity
             onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
-            style={styles.button}
+            style={styles.Runbtn}
           >
             <Text style={styles.buttonText}>RunHistory</Text>
           </TouchableOpacity>
         </View>
+
+
       </View>
     </View>
   );
@@ -109,7 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',
@@ -160,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: height * 0.9,
+    height: height * 0.98,
     position: 'absolute',
     top: 0,
   },
@@ -173,6 +186,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
+  Runbtn: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    marginHorizontal: width * 0.05,
+    padding: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: width * 0.87,
+    height: width * 0.35,
+    borderWidth: 2,
+    borderColor: '#AAC7D8',
+    marginTop: height * 0.14,
+  },
   button: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -184,9 +215,29 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'pink',
-    width: width * 0.2,
-    height: width * 0.2,
+    backgroundColor: 'white',
+    width: width * 0.5,
+    height: width * 0.5,
+    borderWidth: 2,
+    borderColor: '#AAC7D8',
+  },
+  buttonContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  icon: {
+    marginBottom: 5,
+  },
+  buttonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  buttonSubtitle: {
+    fontSize: 12,
+    color: '#000',
+    textAlign: 'center',
   },
   buttonText: {
     color: 'black',
@@ -205,7 +256,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
     alignSelf: 'center',
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: '#DFEBF6',
   },
   goalHeader: {
