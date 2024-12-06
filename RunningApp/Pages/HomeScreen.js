@@ -205,6 +205,8 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
     alignSelf: 'center',
+    borderWidth: 3,
+    borderColor: '#DFEBF6',
   },
   goalHeader: {
     flexDirection: 'row',
