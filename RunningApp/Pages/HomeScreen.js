@@ -90,7 +90,6 @@ const HomeScreen = ({ user }) => {
                 user: { uid: user.uid, displayName: user.displayName },
               })
             }
-            style={styles.button}
           >
             <View style={styles.buttonContent}>
               <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} />
@@ -225,14 +224,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
-    marginHorizontal: width * 0.05,
+    marginHorizontal: width * 0.01,
     padding: 15,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    width: width * 0.5,
-    height: width * 0.5,
+    width: width * 0.53,
+    height: width * 0.45,
+    borderWidth: 2,
+    borderColor: '#AAC7D8',
+  },
+  buttonTra: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    marginHorizontal: width * 0.01,
+    padding: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: width * 0.4,
+    height: width * 0.45,
     borderWidth: 2,
     borderColor: '#AAC7D8',
   },
