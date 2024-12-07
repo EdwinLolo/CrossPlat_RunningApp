@@ -41,6 +41,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow app to access your location for tracking"
         }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
       ]
     ]
   }

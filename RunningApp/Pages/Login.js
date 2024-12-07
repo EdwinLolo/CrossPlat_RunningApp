@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, Alert, View, FlatList } from "react-native";
 import {
-  getAuth,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -11,7 +10,6 @@ import {
 import { FIREBASE_AUTH } from "../config/firebaseConfig";
 import AuthScreen from "./AuthScreen";
 import BottomNavbar from "../BottomNavbar";
-import styles from "./PagesStyle/SignIn.style";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,7 +51,6 @@ const Login = () => {
           await signInWithEmailAndPassword(auth, email, password);
           console.log("User signed in successfully!");
         } else {
-          // Sign Up: Buat user baru
           const userCredential = await createUserWithEmailAndPassword(
             auth,
             email,
@@ -61,13 +58,12 @@ const Login = () => {
           );
           console.log("User created successfully!");
 
-          // Update profile dengan username
           await updateProfile(userCredential.user, {
             displayName: username,
           });
           console.log("Username set successfully!");
-          setIsLogin(true); // Beralih ke mode Sign In setelah Sign Up berhasil
-          resetFields(); // Reset fields untuk halaman Sign In
+          setIsLogin(true);
+          resetFields();
         }
       }
     } catch (error) {
