@@ -4,7 +4,8 @@ import * as Location from "expo-location";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { doc, collection, addDoc } from "firebase/firestore";
-import { FIREBASE_DB } from "../config/firebaseConfig"; // Pastikan Anda mengimpor firebase config dengan benar
+import { FIREBASE_DB } from "../config/firebaseConfig";
+import { Pedometer } from "expo-sensors";
 
 // Fungsi untuk menghitung jarak menggunakan rumus Haversine
 const haversine = (coords1, coords2) => {
@@ -23,7 +24,7 @@ const haversine = (coords1, coords2) => {
 };
 
 // Fungsi untuk menyimpan riwayat perjalanan ke Firestore
-const saveHistory = async (route, distance, time, calories, uid) => {
+const saveHistory = async (route, distance, time, calories, steps, uid) => {
   try {
     const historyRef = collection(FIREBASE_DB, "users", uid, "history");
     await addDoc(historyRef, {
@@ -31,6 +32,7 @@ const saveHistory = async (route, distance, time, calories, uid) => {
       distance,
       time,
       calories,
+      steps,
       timestamp: new Date(),
     });
     console.log("History saved successfully");
@@ -47,6 +49,7 @@ const Tracking = () => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0); // dalam detik
   const [calories, setCalories] = useState(0);
+  const [steps, setSteps] = useState(0);
   const navigation = useNavigation();
   const routeParams = useRoute().params;
   const { uid, displayName } = routeParams?.user || {}; // Mengambil uid dan displayName dari params
@@ -105,6 +108,40 @@ const Tracking = () => {
     }
   }, [tracking, startTime]);
 
+  useEffect(() => {
+    if (tracking) {
+      const totalCalories = calculateCalories();
+      setCalories(totalCalories); // Set kalori setiap detik
+    }
+  }, [elapsedTime, tracking]); // Mengupdate kalori setiap kali elapsedTime berubah
+
+  useEffect(() => {
+    let pedometerSubscription;
+
+    if (tracking) {
+      Pedometer.isAvailableAsync().then(
+        (result) => {
+          if (result) {
+            pedometerSubscription = Pedometer.watchStepCount((result) => {
+              setSteps(result.steps);
+            });
+          } else {
+            alert("Pedometer tidak tersedia pada perangkat ini.");
+          }
+        },
+        (error) => {
+          console.error("Error checking pedometer availability: ", error);
+        }
+      );
+    }
+
+    return () => {
+      if (pedometerSubscription) {
+        pedometerSubscription.remove();
+      }
+    };
+  }, [tracking]);
+
   // Menghitung pace (menit per km)
   const calculatePace = () => {
     if (elapsedTime === 0 || distance === 0) return 0;
@@ -120,19 +157,12 @@ const Tracking = () => {
     return MET * 55 * hours; // Kalori yang terbakar
   };
 
-  // Perbarui kalori secara real-time setiap detik
-  useEffect(() => {
-    if (tracking) {
-      const totalCalories = calculateCalories();
-      setCalories(totalCalories); // Set kalori setiap detik
-    }
-  }, [elapsedTime, tracking]); // Mengupdate kalori setiap kali elapsedTime berubah
-
   const startTracking = () => {
     setRoute([]); // Reset rute ketika mulai pelacakan baru
     setDistance(0); // Reset jarak
     setElapsedTime(0); // Reset waktu
     setCalories(0); // Reset kalori
+    setSteps(0); // Reset langkah
     setTracking(true); // Mulai pelacakan
   };
 
@@ -141,7 +171,7 @@ const Tracking = () => {
       setTracking(false);
       const pace = calculatePace();
       const totalCalories = calculateCalories();
-      saveHistory(route, distance, elapsedTime, totalCalories, uid); // Menyimpan riwayat ke Firestore
+      saveHistory(route, distance, elapsedTime, totalCalories, steps, uid); // Menyimpan riwayat ke Firestore
     } else {
       alert("Belum ada data untuk disimpan. Mulai tracking terlebih dahulu.");
     }
@@ -152,7 +182,7 @@ const Tracking = () => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: location ? location.latitude : -6.2666, // Nilai default yang lebih aman
+          latitude: location ? location.latitude : -6.2666,
           longitude: location ? location.longitude : 106.605,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
@@ -171,6 +201,7 @@ const Tracking = () => {
           Waktu: {Math.floor(elapsedTime / 60)} menit {elapsedTime % 60} detik
         </Text>
         <Text>Kalori Terbakar: {calories.toFixed(2)} kcal</Text>
+        <Text>Langkah: {steps}</Text>
         <Button title="Start" onPress={startTracking} disabled={tracking} />
         <Button title="Stop" onPress={stopTracking} disabled={!tracking} />
         <Button
