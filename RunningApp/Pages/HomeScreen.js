@@ -90,6 +90,7 @@ const HomeScreen = ({ user }) => {
                 user: { uid: user.uid, displayName: user.displayName },
               })
             }
+            style={styles.buttonTra}
           >
             <View style={styles.buttonContent}>
               <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} />
