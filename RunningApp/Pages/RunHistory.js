@@ -4,16 +4,23 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 
-const RunHistory = ({ route }) => {
+const RunHistory = ({ route, navigation }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const { uid } = route.params; // Mendapatkan uid pengguna dari params
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -46,65 +53,80 @@ const RunHistory = ({ route }) => {
     );
   }
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Run History</Text>
-      <FlatList
-        data={history}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View style={styles.historyItem}>
-            <Text>Run {index + 1}</Text>
-            <Text>Distance: {(item.distance || 0).toFixed(2)} km</Text>
-            <Text>Calories: {(item.calories || 0).toFixed(2)} kcal</Text>
-            <Text>
-              Time: {Math.floor((item.time || 0) / 60)} min{" "}
-              {(item.time || 0) % 60} sec
-            </Text>
-            <Text>
-              Date: {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
-            </Text>
-            {/* Menampilkan peta dengan polyline */}
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: item.route?.[0]?.latitude || 37.78825,
-                longitude: item.route?.[0]?.longitude || -122.4324,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-              }}
-            >
-              {/* Menggambar Polyline untuk seluruh route */}
-              <Polyline
-                coordinates={item.route}
-                strokeColor="blue"
-                strokeWidth={3}
-              />
-
-              {/* Menampilkan Marker hanya di titik awal */}
-              {item.route?.[0] && (
-                <Marker coordinate={item.route[0]} title="Start Point" />
-              )}
-
-              {/* Menampilkan Marker hanya di titik akhir */}
-              {item.route?.[item.route.length - 1] && (
-                <Marker
-                  coordinate={item.route[item.route.length - 1]}
-                  title="End Point"
+      <View style={styles.bluebg}>
+        <Text style={styles.title}>Run History</Text>
+        <FlatList
+          data={history}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View style={styles.historyItem}>
+              <Text>Run {index + 1}</Text>
+              <Text>Distance: {(item.distance || 0).toFixed(2)} km</Text>
+              <Text>Calories: {(item.calories || 0).toFixed(2)} kcal</Text>
+              <Text>
+                Time: {Math.floor((item.time || 0) / 60)} min{" "}
+                {(item.time || 0) % 60} sec
+              </Text>
+              <Text>
+                Date: {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
+              </Text>
+              {/* Menampilkan peta dengan polyline */}
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: item.route?.[0]?.latitude || 37.78825,
+                  longitude: item.route?.[0]?.longitude || -122.4324,
+                  latitudeDelta: 0.01,
+                  longitudeDelta: 0.01,
+                }}
+              >
+                {/* Menggambar Polyline untuk seluruh route */}
+                <Polyline
+                  coordinates={item.route}
+                  strokeColor="blue"
+                  strokeWidth={3}
                 />
-              )}
-            </MapView>
-          </View>
-        )}
-      />
+
+                {/* Menampilkan Marker hanya di titik awal */}
+                {item.route?.[0] && (
+                  <Marker coordinate={item.route[0]} title="Start Point" />
+                )}
+
+                {/* Menampilkan Marker hanya di titik akhir */}
+                {item.route?.[item.route.length - 1] && (
+                  <Marker
+                    coordinate={item.route[item.route.length - 1]}
+                    title="End Point"
+                  />
+                )}
+              </MapView>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 };
 
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    justifyContent: 'flex-start',
+    backgroundColor: '#ffffff',
+  },
+  bluebg: {
+    width: '100%',
+    height: height * 0.24,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#AAC7D8',
   },
   title: {
     fontSize: 24,
