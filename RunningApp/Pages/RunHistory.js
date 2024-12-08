@@ -5,16 +5,21 @@ import {
   FlatList,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
+import { launchImageLibrary } from 'react-native-image-picker';
 
-const RunHistory = ({ route, navigation }) => {
+const RunHistory = ({ route, navigation, user }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { uid } = route.params; // Mendapatkan uid pengguna dari params
+  const { uid } = route.params;
+  const [photoUri, setPhotoUri] = useState(null);
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,7 +32,7 @@ const RunHistory = ({ route, navigation }) => {
       try {
         // Mengambil riwayat perjalanan dari Firestore
         const historyRef = collection(FIREBASE_DB, "users", uid, "history");
-        const q = query(historyRef); // Query untuk mengambil semua riwayat
+        const q = query(historyRef); 
         const querySnapshot = await getDocs(q);
         const historyData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -53,11 +58,36 @@ const RunHistory = ({ route, navigation }) => {
     );
   }
 
+  const handleImageSelect = () => {
+    launchImageLibrary({ mediaType: 'photo', quality: 0.5 }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        setPhotoUri(response.assets[0].uri);
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.bluebg}>
-        <Text style={styles.title}>Run History</Text>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleImageSelect}>
+            <Image
+              source={{ uri: photoUri || 'https://koreajoongangdaily.joins.com/data/photo/2023/10/09/b37d6ba6-a639-4674-8594-f8e96bc0587e.jpg' }}  // Gunakan gambar default atau gambar input pengguna
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+
+          <View style={styles.textContainerHead}>
+            <View style={styles.rowContainer}>
+              <Text style={styles.hello}>Hello, </Text>
+              {/* <Text style={styles.greetingText}>{user.displayName}</Text> */}
+            </View>
+            <Text style={styles.levelText}>Beginner</Text>
+          </View>
+        </View>
+
+        
+
         <FlatList
           data={history}
           keyExtractor={(item) => item.id}
@@ -128,11 +158,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#AAC7D8',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: height * 0.15,
+    paddingHorizontal: width * 0.05,
   },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    marginRight: 10,
+  },
+  textContainerHead: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  hello: {
+    fontSize: 15,
+    paddingLeft: 5,
+    color: '#ffffff',
+  },
+  greetingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  levelText: {
+    fontSize: 13,
+    color: '#ffffff',
+    paddingHorizontal: 5,
+  },
+  // title: {
+  //   fontSize: 24,
+  //   fontWeight: "bold",
+  //   marginBottom: 20,
+  // },
   historyItem: {
     padding: 10,
     marginVertical: 5,
