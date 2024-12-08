@@ -13,14 +13,15 @@ import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useNavigation } from "@react-navigation/native";
 
-const RunHistory = ({ route, navigation }) => {
-  // const navigation = useNavigation();
+const RunHistory = ({ route }) => {
+  const navigation = useNavigation();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [photoUri, setPhotoUri] = useState(null);
   const { uid } = route.params;
-  const { user } = route.params; 
+  const { user } = route.params;
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -80,69 +81,69 @@ const RunHistory = ({ route, navigation }) => {
             <Text style={styles.levelText}>Beginner</Text>
           </View>
         </View>
+      </View>
+      <View style={styles.RunHisbtn}>
+        <View style={styles.Runbtn}>
+          {/* Total Progress Box */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>Total progress</Text>
+          </View>
 
-        <View style={styles.RunHisbtn}>
-          <View style={styles.Runbtn}>
-            {/* Total Progress Box */}
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Total progress</Text>
-            </View>
-
-            {/* Box with 3 sections */}
-            <View style={styles.progressBox}>
-              {/* First Section: Running */}
-              <View style={styles.section}>
-                {/* <Image
+          {/* Box with 3 sections */}
+          <View style={styles.progressBox}>
+            {/* First Section: Running */}
+            <View style={styles.section}>
+              {/* <Image
                   source={require('./assets/run-icon.png')} // Gambar orang lari
                   style={styles.icon}
                 /> */}
-                <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>103,2</Text>
-                  <Text style={styles.unitText}>km</Text>
-                </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.valueText}>103,2</Text>
+                <Text style={styles.unitText}>km</Text>
               </View>
+            </View>
 
-              {/* Second Section: Stopwatch */}
-              <View style={styles.section}>
-                {/* <Image
+            {/* Second Section: Stopwatch */}
+            <View style={styles.section}>
+              {/* <Image
                   source={require('./assets/stopwatch-icon.png')} // Gambar stopwatch
                   style={styles.icon}
                 /> */}
-                <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>16,9</Text>
-                  <Text style={styles.unitText}>hr</Text>
-                </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.valueText}>16,9</Text>
+                <Text style={styles.unitText}>hr</Text>
               </View>
+            </View>
 
-              {/* Third Section: Calories */}
-              <View style={styles.sectionLast}>
-                {/* <Image
+            {/* Third Section: Calories */}
+            <View style={styles.sectionLast}>
+              {/* <Image
                   source={require('./assets/fire-icon.png')} // Gambar api
                   style={styles.icon}
                 /> */}
-                <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>1,5</Text>
-                  <Text style={styles.unitText}>kcal</Text>
-                </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.valueText}>1,5</Text>
+                <Text style={styles.unitText}>kcal</Text>
               </View>
             </View>
           </View>
         </View>
+      </View>
 
-
+      <View style={styles.HisList}>
         <FlatList
           data={history}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
             <View style={styles.historyItem}>
-              <Text>Run {index + 1}</Text>
-              <Text>Distance: {(item.distance || 0).toFixed(2)} km</Text>
-              <Text>Calories: {(item.calories || 0).toFixed(2)} kcal</Text>
-              <Text>
+              <Text style={styles.historyText}>Run {index + 1}</Text>
+              <Text style={styles.historyText}>Distance: {(item.distance || 0).toFixed(2)} km</Text>
+              <Text style={styles.historyText}>Calories: {(item.calories || 0).toFixed(2)} kcal</Text>
+              <Text style={styles.historyText}>
                 Time: {Math.floor((item.time || 0) / 60)} min{" "}
                 {(item.time || 0) % 60} sec
               </Text>
-              <Text>
+              <Text style={styles.historyText}>
                 Date: {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
               </Text>
               {/* Menampilkan peta dengan polyline */}
@@ -158,7 +159,7 @@ const RunHistory = ({ route, navigation }) => {
                 {/* Menggambar Polyline untuk seluruh route */}
                 <Polyline
                   coordinates={item.route}
-                  strokeColor="blue"
+                  strokeColor="#FFB5O9"
                   strokeWidth={3}
                 />
 
@@ -188,7 +189,6 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     backgroundColor: '#ffffff',
   },
   bluebg: {
@@ -203,7 +203,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: height * 0.07,
+    // paddingTop: height * 0.1,
+    paddingBottom: height * 0.07,
     paddingHorizontal: width * 0.05,
   },
   avatar: {
@@ -316,16 +317,34 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#888888',
   },
-  // title: {
-  //   fontSize: 24,
-  //   fontWeight: "bold",
-  //   marginBottom: 20,
-  // },
+
+  HisList: {
+    flex: 1,
+    padding: 10,
+    paddingTop: height * 0.14,
+    width: '100%',
+    alignItems: 'center',
+  },
   historyItem: {
     padding: 10,
     marginVertical: 5,
     backgroundColor: "#f0f0f0",
-    borderRadius: 5,
+    borderRadius: 15,
+    width: width * 0.87,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    backgroundColor: 'white',
+    width: width * 0.87,
+    borderWidth: 3,
+    borderColor: '#AAC7D7',
+  },
+  historyText: {
+    fontSize: 14,
+    marginBottom: 5,
+    color: '#333',
   },
   map: {
     width: "100%",
