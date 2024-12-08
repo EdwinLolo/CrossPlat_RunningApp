@@ -14,18 +14,13 @@ import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { launchImageLibrary } from 'react-native-image-picker';
 
-const RunHistory = ({ route, navigation, user }) => {
+const RunHistory = ({ route, navigation }) => {
+  // const navigation = useNavigation();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { uid } = route.params;
   const [photoUri, setPhotoUri] = useState(null);
-
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
+  const { uid } = route.params;
+  const { user } = route.params; 
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -87,10 +82,7 @@ const RunHistory = ({ route, navigation, user }) => {
         </View>
 
         <View style={styles.RunHisbtn}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
-            style={styles.Runbtn}
-          >
+          <View style={styles.Runbtn}>
             {/* Total Progress Box */}
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Total progress</Text>
@@ -134,8 +126,9 @@ const RunHistory = ({ route, navigation, user }) => {
                 </View>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
+
 
         <FlatList
           data={history}
@@ -267,19 +260,20 @@ const styles = StyleSheet.create({
     height: width * 0.4,
     borderWidth: 2,
     borderColor: '#AAC7D7',
-    marginTop: height * 0.14,
+    marginTop: height * 0.15,
   },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingBottom: 5,
+    paddingBottom: height * 0.015,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 21.5,
     fontWeight: 'bold',
     color: 'black',
+    marginLeft: width * 0.004,
   },
   progressBox: {
     flexDirection: 'row',

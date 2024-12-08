@@ -313,7 +313,6 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingBottom: 5,
   },
-
   titleText: {
     fontSize: 20,
     fontWeight: 'bold',

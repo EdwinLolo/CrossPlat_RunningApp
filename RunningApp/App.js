@@ -76,7 +76,7 @@ export default function App() {
         <Stack.Screen
           name="RunHistory"
           component={RunHistory}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
         <Stack.Screen
