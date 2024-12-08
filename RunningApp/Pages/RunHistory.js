@@ -91,7 +91,7 @@ const RunHistory = ({ route, navigation, user }) => {
             onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
             style={styles.Runbtn}
           >
-            {/* Title */}
+            {/* Total Progress Box */}
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Total progress</Text>
             </View>
