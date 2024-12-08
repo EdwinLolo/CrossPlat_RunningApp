@@ -32,7 +32,7 @@ const RunHistory = ({ route, navigation, user }) => {
       try {
         // Mengambil riwayat perjalanan dari Firestore
         const historyRef = collection(FIREBASE_DB, "users", uid, "history");
-        const q = query(historyRef); 
+        const q = query(historyRef);
         const querySnapshot = await getDocs(q);
         const historyData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -86,7 +86,56 @@ const RunHistory = ({ route, navigation, user }) => {
           </View>
         </View>
 
-        
+        <View style={styles.RunHisbtn}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
+            style={styles.Runbtn}
+          >
+            {/* Title */}
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>Total progress</Text>
+            </View>
+
+            {/* Box with 3 sections */}
+            <View style={styles.progressBox}>
+              {/* First Section: Running */}
+              <View style={styles.section}>
+                {/* <Image
+                  source={require('./assets/run-icon.png')} // Gambar orang lari
+                  style={styles.icon}
+                /> */}
+                <View style={styles.textContainer}>
+                  <Text style={styles.valueText}>103,2</Text>
+                  <Text style={styles.unitText}>km</Text>
+                </View>
+              </View>
+
+              {/* Second Section: Stopwatch */}
+              <View style={styles.section}>
+                {/* <Image
+                  source={require('./assets/stopwatch-icon.png')} // Gambar stopwatch
+                  style={styles.icon}
+                /> */}
+                <View style={styles.textContainer}>
+                  <Text style={styles.valueText}>16,9</Text>
+                  <Text style={styles.unitText}>hr</Text>
+                </View>
+              </View>
+
+              {/* Third Section: Calories */}
+              <View style={styles.sectionLast}>
+                {/* <Image
+                  source={require('./assets/fire-icon.png')} // Gambar api
+                  style={styles.icon}
+                /> */}
+                <View style={styles.textContainer}>
+                  <Text style={styles.valueText}>1,5</Text>
+                  <Text style={styles.unitText}>kcal</Text>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
 
         <FlatList
           data={history}
@@ -161,7 +210,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: height * 0.15,
+    paddingTop: height * 0.07,
     paddingHorizontal: width * 0.05,
   },
   avatar: {
@@ -192,6 +241,86 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#ffffff',
     paddingHorizontal: 5,
+  },
+  RunHisbtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: height * 0.37,
+    position: 'absolute',
+    top: 0,
+  },
+  Runbtn: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    marginHorizontal: width * 0.05,
+    padding: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: width * 0.87,
+    height: width * 0.4,
+    borderWidth: 2,
+    borderColor: '#AAC7D7',
+    marginTop: height * 0.14,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingBottom: 5,
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  progressBox: {
+    flexDirection: 'row',
+    width: width * 0.83,
+    height: height * 0.09,
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: '#AAC7D7',
+    borderRadius: 6,
+    marginTop: 5,
+  },
+  section: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    borderRightWidth: 1,
+    borderRightColor: '#AAC7D8',
+  },
+  sectionLast: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 6,
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    marginBottom: 5,
+  },
+  textContainer: {
+    alignItems: 'flex-end',
+  },
+  valueText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  unitText: {
+    fontSize: 11,
+    color: '#888888',
   },
   // title: {
   //   fontSize: 24,
