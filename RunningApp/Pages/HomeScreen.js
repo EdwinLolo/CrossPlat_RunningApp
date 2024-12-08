@@ -93,7 +93,11 @@ const HomeScreen = ({ user }) => {
             style={styles.buttonTra}
           >
             <View style={styles.buttonContent}>
-              <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} />
+              {/* <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} /> */}
+              <Image
+                source={require('../assets/svg/run-stickman.svg')} // Gambar orang lari
+                style={styles.icon}
+              />
               <Text style={styles.buttonTitle}>Tracking</Text>
               <Text style={styles.buttonSubtitle}>let's increase productivity and achive your weekly progress</Text>
             </View>
@@ -307,11 +311,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingBottom: 5, 
+    paddingBottom: 5,
   },
 
   titleText: {
-    fontSize: 20, 
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
   },
@@ -325,7 +329,7 @@ const styles = StyleSheet.create({
   progressBox: {
     flexDirection: 'row',
     width: width * 0.83,
-    height: height * 0.08, 
+    height: height * 0.08,
     backgroundColor: 'white',
     borderWidth: 2,
     borderColor: '#AAC7D7',
@@ -337,7 +341,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 5,  
+    padding: 5,
     borderRightWidth: 1,
     borderRightColor: '#AAC7D8',
   },
@@ -346,11 +350,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 6, 
+    padding: 6,
   },
 
   icon: {
-    width: 25, 
+    width: 25,
     height: 25,
     marginBottom: 5,
   },
@@ -360,13 +364,13 @@ const styles = StyleSheet.create({
   },
 
   valueText: {
-    fontSize: 16, 
+    fontSize: 16,
     fontWeight: 'bold',
     color: 'black',
   },
 
   unitText: {
-    fontSize: 11, 
+    fontSize: 11,
     color: '#888888',
   },
   goalCard: {
