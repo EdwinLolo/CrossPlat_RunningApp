@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
@@ -60,6 +60,10 @@ const RunHistory = ({ route }) => {
         setPhotoUri(response.assets[0].uri);
       }
     });
+  };
+
+  const handleDetailNavigation = (item) => {
+    navigation.navigate('RunHistoryDetail', { historyItem: item }); // Mengirimkan item ke halaman detail
   };
 
   return (
@@ -136,46 +140,54 @@ const RunHistory = ({ route }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
             <View style={styles.historyItem}>
-              <Text style={styles.historyText}>Run {index + 1}</Text>
-              <Text style={styles.historyText}>Distance: {(item.distance || 0).toFixed(2)} km</Text>
-              <Text style={styles.historyText}>Calories: {(item.calories || 0).toFixed(2)} kcal</Text>
-              <Text style={styles.historyText}>
-                Time: {Math.floor((item.time || 0) / 60)} min{" "}
-                {(item.time || 0) % 60} sec
-              </Text>
-              <Text style={styles.historyText}>
-                Date: {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
-              </Text>
-              {/* Menampilkan peta dengan polyline */}
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: item.route?.[0]?.latitude || 37.78825,
-                  longitude: item.route?.[0]?.longitude || -122.4324,
-                  latitudeDelta: 0.01,
-                  longitudeDelta: 0.01,
-                }}
-              >
-                {/* Menggambar Polyline untuk seluruh route */}
-                <Polyline
-                  coordinates={item.route}
-                  strokeColor="#FFB5O9"
-                  strokeWidth={3}
-                />
-
-                {/* Menampilkan Marker hanya di titik awal */}
-                {item.route?.[0] && (
-                  <Marker coordinate={item.route[0]} title="Start Point" />
-                )}
-
-                {/* Menampilkan Marker hanya di titik akhir */}
-                {item.route?.[item.route.length - 1] && (
-                  <Marker
-                    coordinate={item.route[item.route.length - 1]}
-                    title="End Point"
+              {/* Map and Text in a row */}
+              <View style={styles.mapContainer}>
+                {/* Left side: Map */}
+                <MapView
+                  style={styles.map}
+                  initialRegion={{
+                    latitude: item.route?.[0]?.latitude || 37.78825,
+                    longitude: item.route?.[0]?.longitude || -122.4324,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
+                  }}
+                >
+                  <Polyline
+                    coordinates={item.route}
+                    strokeColor="#FFB5O9"
+                    strokeWidth={3}
                   />
-                )}
-              </MapView>
+                  {item.route?.[0] && (
+                    <Marker coordinate={item.route[0]} title="Start Point" />
+                  )}
+                  {item.route?.[item.route.length - 1] && (
+                    <Marker
+                      coordinate={item.route[item.route.length - 1]}
+                      title="End Point"
+                    />
+                  )}
+                </MapView>
+
+                {/* Right side: Text information */}
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.historyText}>
+                    {new Date(item.timestamp?.seconds * 1000).toLocaleDateString('en-US', {
+                      month: 'long', // Menampilkan nama bulan pendek (e.g., 'Jan', 'Feb', 'Mar', ...)
+                      day: 'numeric', // Menampilkan tanggal tanpa tahun
+                    })}
+                  </Text>
+                  <Text style={styles.historyTextDis}>{(item.distance || 0).toFixed(2)} km</Text>
+                  <View style={styles.calnspeed}>
+                    <Text style={styles.historyText}>
+                      {(item.calories || 0).toFixed(2)} kcal   {item.time && item.time > 0 ? ((item.distance || 0) / (item.time || 1) * 3600).toFixed(2) : 0} km/h
+                    </Text>
+                  </View>
+                  {/* Tanda > untuk menuju ke detail */}
+                  <TouchableOpacity onPress={() => handleDetailNavigation(item)} style={styles.arrowContainer}>
+                    <Text style={styles.arrowText}>{'>'}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           )}
         />
@@ -203,7 +215,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingTop: height * 0.1,
     paddingBottom: height * 0.07,
     paddingHorizontal: width * 0.05,
   },
@@ -317,7 +328,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#888888',
   },
-
   HisList: {
     flex: 1,
     padding: 10,
@@ -337,20 +347,55 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
     backgroundColor: 'white',
-    width: width * 0.87,
     borderWidth: 3,
     borderColor: '#AAC7D7',
+  },
+  historyTextDis:{
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+    marginLeft: width * 0.02,
   },
   historyText: {
     fontSize: 14,
     marginBottom: 5,
-    color: '#333',
+    color: 'gray',
+    marginLeft: width * 0.02,
+  },
+  mapContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginVertical: 10,
   },
   map: {
-    width: "100%",
-    height: 200,
-    marginTop: 10,
+    height: height * 0.09,
+    width: height * 0.09,
+    borderRadius: 20,
+    marginTop: height * 0.0001
   },
+  textContainerRight: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  calnspeed: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+  },
+  arrowContainer: {
+    position: 'absolute',
+    right: width * 0.05,
+    top: height * 0.037,
+    transform: [{ translateY: -10 }],
+  },
+  arrowText: {
+    fontSize: 24,
+    color: 'gray',
+  }
 });
 
 export default RunHistory;
