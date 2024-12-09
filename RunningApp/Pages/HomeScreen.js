@@ -50,7 +50,7 @@ const HomeScreen = ({ user }) => {
               <Text style={[styles.goalText, { color: '#5D63D1' }]}>50 km</Text>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate("Tracking")} style={styles.arrowButton}>
-              <Text style={styles.arrowText}>></Text>
+              <Text style={styles.arrowText}></Text>
             </TouchableOpacity>
           </View>
 

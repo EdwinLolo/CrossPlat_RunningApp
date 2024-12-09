@@ -46,13 +46,13 @@ export default function App() {
         <Stack.Screen
           name="Community"
           component={Community}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
         <Stack.Screen
           name="ShowCommunity"
           component={ShowCommunity}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
         <Stack.Screen
