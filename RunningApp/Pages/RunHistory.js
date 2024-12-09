@@ -171,8 +171,8 @@ const RunHistory = ({ route }) => {
                 <View style={styles.textContainerRight}>
                   <Text style={styles.historyText}>
                     {new Date(item.timestamp?.seconds * 1000).toLocaleDateString('en-US', {
-                      month: 'long', // Menampilkan nama bulan pendek (e.g., 'Jan', 'Feb', 'Mar', ...)
-                      day: 'numeric', // Menampilkan tanggal tanpa tahun
+                      month: 'long', 
+                      day: 'numeric', 
                     })}
                   </Text>
                   <Text style={styles.historyTextDis}>{(item.distance || 0).toFixed(2)} km</Text>

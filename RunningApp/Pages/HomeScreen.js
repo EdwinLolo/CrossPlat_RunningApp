@@ -3,6 +3,12 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Octicons from '@expo/vector-icons/Octicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
@@ -49,8 +55,8 @@ const HomeScreen = ({ user }) => {
               <Text style={styles.goalText}>Week goal  </Text>
               <Text style={[styles.goalText, { color: '#5D63D1' }]}>50 km</Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Tracking")} style={styles.arrowButton}>
-              <Text style={styles.arrowText}>></Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Tracking")} style={styles.arrowButtonGoal}>
+              <Entypo name="chevron-small-right" size={30} color="#333333" />
             </TouchableOpacity>
           </View>
 
@@ -94,12 +100,9 @@ const HomeScreen = ({ user }) => {
           >
             <View style={styles.buttonContent}>
               {/* <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} /> */}
-              <Image
-                source={require('../assets/svg/run-stickman.svg')} // Gambar orang lari
-                style={styles.icon}
-              />
+              <MaterialCommunityIcons name="run-fast" size={85} color="#AAC7D8" style={styles.iconTra} />
               <Text style={styles.buttonTitle}>Tracking</Text>
-              <Text style={styles.buttonSubtitle}>let's increase productivity and achive your weekly progress</Text>
+              <Text style={styles.buttonSubtitle}>let's achive your weekly progress</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -113,17 +116,16 @@ const HomeScreen = ({ user }) => {
             {/* Title and Arrow */}
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Total progress</Text>
-              <Text style={styles.arrowText}> &gt;</Text>
+              <Entypo name="chevron-small-right" size={30} color="#333333" />
+
             </View>
 
             {/* Box with 3 sections */}
             <View style={styles.progressBox}>
               {/* First Section: Running */}
               <View style={styles.section}>
-                {/* <Image
-                  source={require('./assets/run-icon.png')} // Gambar orang lari
-                  style={styles.icon}
-                /> */}
+                <FontAwesome6 name="person-running" size={30} color="red" />
+                <Text>   </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>103,2</Text>
                   <Text style={styles.unitText}>km</Text>
@@ -132,10 +134,8 @@ const HomeScreen = ({ user }) => {
 
               {/* Second Section: Stopwatch */}
               <View style={styles.section}>
-                {/* <Image
-                  source={require('./assets/stopwatch-icon.png')} // Gambar stopwatch
-                  style={styles.icon}
-                /> */}
+                <Octicons name="stopwatch" size={35} color="purple" />
+                <Text>   </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>16,9</Text>
                   <Text style={styles.unitText}>hr</Text>
@@ -144,10 +144,8 @@ const HomeScreen = ({ user }) => {
 
               {/* Third Section: Calories */}
               <View style={styles.sectionLast}>
-                {/* <Image
-                  source={require('./assets/fire-icon.png')} // Gambar api
-                  style={styles.icon}
-                /> */}
+                <FontAwesome5 name="fire-alt" size={35} color="orange" />
+                <Text>   </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>1,5</Text>
                   <Text style={styles.unitText}>kcal</Text>
@@ -265,6 +263,10 @@ const styles = StyleSheet.create({
   iconCoTra: {
     marginBottom: 5,
   },
+  iconTra: {
+    marginBottom: 15,
+    marginTop: 17,
+  },
   buttonTitle: {
     fontSize: 17,
     fontWeight: 'bold',
@@ -324,18 +326,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#AAC7D8',
   },
-
   progressBox: {
     flexDirection: 'row',
     width: width * 0.83,
-    height: height * 0.08,
+    height: height * 0.09,
     backgroundColor: 'white',
     borderWidth: 2,
     borderColor: '#AAC7D7',
     borderRadius: 6,
     marginTop: 5,
   },
-
   section: {
     flex: 1,
     alignItems: 'center',
@@ -343,15 +343,14 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRightWidth: 1,
     borderRightColor: '#AAC7D8',
+    flexDirection: 'row',
   },
-
   sectionLast: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 6,
+    flexDirection: 'row',
   },
-
   icon: {
     width: 25,
     height: 25,
@@ -403,6 +402,11 @@ const styles = StyleSheet.create({
   arrowButton: {
     padding: width * 0.02,
     borderRadius: 15,
+  },
+  arrowButtonGoal: {
+    padding: width * 0.02,
+    borderRadius: 15,
+    marginLeft: width * 0.37
   },
   arrowText: {
     fontSize: width * 0.06,
