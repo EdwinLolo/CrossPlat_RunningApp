@@ -14,6 +14,11 @@ import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from "@react-navigation/native";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Octicons from '@expo/vector-icons/Octicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Entypo from '@expo/vector-icons/Entypo';
+
 
 const RunHistory = ({ route }) => {
   const navigation = useNavigation();
@@ -97,10 +102,8 @@ const RunHistory = ({ route }) => {
           <View style={styles.progressBox}>
             {/* First Section: Running */}
             <View style={styles.section}>
-              {/* <Image
-                  source={require('./assets/run-icon.png')} // Gambar orang lari
-                  style={styles.icon}
-                /> */}
+              <FontAwesome6 name="person-running" size={30} color="red" />
+              <Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>103,2</Text>
                 <Text style={styles.unitText}>km</Text>
@@ -109,10 +112,8 @@ const RunHistory = ({ route }) => {
 
             {/* Second Section: Stopwatch */}
             <View style={styles.section}>
-              {/* <Image
-                  source={require('./assets/stopwatch-icon.png')} // Gambar stopwatch
-                  style={styles.icon}
-                /> */}
+              <Octicons name="stopwatch" size={35} color="purple" />
+              <Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>16,9</Text>
                 <Text style={styles.unitText}>hr</Text>
@@ -121,10 +122,7 @@ const RunHistory = ({ route }) => {
 
             {/* Third Section: Calories */}
             <View style={styles.sectionLast}>
-              {/* <Image
-                  source={require('./assets/fire-icon.png')} // Gambar api
-                  style={styles.icon}
-                /> */}
+              <FontAwesome5 name="fire-alt" size={35} color="orange" /><Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>1,5</Text>
                 <Text style={styles.unitText}>kcal</Text>
@@ -185,12 +183,13 @@ const RunHistory = ({ route }) => {
                   </View>
                   {/* Tanda > untuk menuju ke detail */}
                   <TouchableOpacity onPress={() => handleDetailNavigation(item)} style={styles.arrowContainer}>
-                    <Text style={styles.arrowText}>{'>'}</Text>
+                    <Entypo name="chevron-small-right" size={30} color="gray" />
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           )}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       </View>
     </View>
@@ -305,12 +304,13 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRightWidth: 1,
     borderRightColor: '#AAC7D8',
+    flexDirection: 'row',
   },
   sectionLast: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 6,
+    flexDirection: 'row',
   },
   icon: {
     width: 25,
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  wrapper:{
+  wrapper: {
     borderWidth: 3,
     borderColor: '#AAC7D7',
     padding: 10,
@@ -398,7 +398,15 @@ const styles = StyleSheet.create({
   arrowText: {
     fontSize: 24,
     color: 'gray',
-  }
+  },
+  separator: {
+    left: width * 0.1,
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 5,
+    width: '70%',
+    alignItems: 'center'
+  },
 });
 
 export default RunHistory;
