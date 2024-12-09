@@ -23,20 +23,19 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     marginBottom: 20,
-    marginRight: 10,
     color: "#ffffff",
   },
   userProfileContainer: {
     width: "100%",
     height: "auto",
+    justifyContent: "center",
+    alignItems: "center",
   },
   userImage: {
     width: 50,
     height: 50,
     borderRadius: 50,
     marginBottom: 10,
-    marginLeft: 65,
-
   },
   emailText: {
     fontSize: 20,
@@ -58,23 +57,23 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,	
+    marginTop: 20,
   },
   logoutButton: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     borderRadius: 15,
     padding: 10,
     width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute', 
-    bottom: 80, 
-    left: '50%', 
-    transform: [{ translateX: -50 }], 
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 80,
+    left: "50%",
+    transform: [{ translateX: -50 }],
   },
 
   buttonText: {
-    color: 'white', 
+    color: "white",
   },
 });
 
