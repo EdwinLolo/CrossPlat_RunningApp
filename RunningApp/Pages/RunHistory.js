@@ -8,12 +8,17 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Octicons from '@expo/vector-icons/Octicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Entypo from '@expo/vector-icons/Entypo';
+
 
 const RunHistory = ({ route }) => {
   const navigation = useNavigation();
@@ -61,6 +66,10 @@ const RunHistory = ({ route }) => {
     });
   };
 
+  const handleDetailNavigation = (item) => {
+    navigation.navigate('RunHistoryDetail', { historyItem: item });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.bluebg}>
@@ -96,10 +105,8 @@ const RunHistory = ({ route }) => {
           <View style={styles.progressBox}>
             {/* First Section: Running */}
             <View style={styles.section}>
-              {/* <Image
-                  source={require('./assets/run-icon.png')} // Gambar orang lari
-                  style={styles.icon}
-                /> */}
+              <FontAwesome6 name="person-running" size={30} color="red" />
+              <Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>103,2</Text>
                 <Text style={styles.unitText}>km</Text>
@@ -108,10 +115,8 @@ const RunHistory = ({ route }) => {
 
             {/* Second Section: Stopwatch */}
             <View style={styles.section}>
-              {/* <Image
-                  source={require('./assets/stopwatch-icon.png')} // Gambar stopwatch
-                  style={styles.icon}
-                /> */}
+              <Octicons name="stopwatch" size={35} color="purple" />
+              <Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>16,9</Text>
                 <Text style={styles.unitText}>hr</Text>
@@ -120,10 +125,7 @@ const RunHistory = ({ route }) => {
 
             {/* Third Section: Calories */}
             <View style={styles.sectionLast}>
-              {/* <Image
-                  source={require('./assets/fire-icon.png')} // Gambar api
-                  style={styles.icon}
-                /> */}
+              <FontAwesome5 name="fire-alt" size={35} color="orange" /><Text>   </Text>
               <View style={styles.textContainer}>
                 <Text style={styles.valueText}>1,5</Text>
                 <Text style={styles.unitText}>kcal</Text>
@@ -135,57 +137,62 @@ const RunHistory = ({ route }) => {
 
       <View style={styles.HisList}>
         <FlatList
+          style={styles.wrapper}
           data={history}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
             <View style={styles.historyItem}>
-              <Text style={styles.historyText}>Run {index + 1}</Text>
-              <Text style={styles.historyText}>
-                Distance: {(item.distance || 0).toFixed(2)} km
-              </Text>
-              <Text style={styles.historyText}>
-                Calories: {(item.calories || 0).toFixed(2)} kcal
-              </Text>
-              <Text style={styles.historyText}>
-                Time: {Math.floor((item.time || 0) / 60)} min{" "}
-                {(item.time || 0) % 60} sec
-              </Text>
-              <Text style={styles.historyText}>
-                Date:{" "}
-                {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
-              </Text>
-              {/* Menampilkan peta dengan polyline */}
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: item.route?.[0]?.latitude || 37.78825,
-                  longitude: item.route?.[0]?.longitude || -122.4324,
-                  latitudeDelta: 0.01,
-                  longitudeDelta: 0.01,
-                }}
-              >
-                {/* Menggambar Polyline untuk seluruh route */}
-                <Polyline
-                  coordinates={item.route}
-                  strokeColor="#FFB5O9"
-                  strokeWidth={3}
-                />
-
-                {/* Menampilkan Marker hanya di titik awal */}
-                {item.route?.[0] && (
-                  <Marker coordinate={item.route[0]} title="Start Point" />
-                )}
-
-                {/* Menampilkan Marker hanya di titik akhir */}
-                {item.route?.[item.route.length - 1] && (
-                  <Marker
-                    coordinate={item.route[item.route.length - 1]}
-                    title="End Point"
+              {/* Map and Text in a row */}
+              <View style={styles.mapContainer}>
+                {/* Left side: Map */}
+                <MapView
+                  style={styles.map}
+                  initialRegion={{
+                    latitude: item.route?.[0]?.latitude || 37.78825,
+                    longitude: item.route?.[0]?.longitude || -122.4324,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
+                  }}
+                >
+                  <Polyline
+                    coordinates={item.route}
+                    strokeColor="#FFB5O9"
+                    strokeWidth={3}
                   />
-                )}
-              </MapView>
+                  {item.route?.[0] && (
+                    <Marker coordinate={item.route[0]} title="Start Point" />
+                  )}
+                  {item.route?.[item.route.length - 1] && (
+                    <Marker
+                      coordinate={item.route[item.route.length - 1]}
+                      title="End Point"
+                    />
+                  )}
+                </MapView>
+
+                {/* Right side: Text information */}
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.historyText}>
+                    {new Date(item.timestamp?.seconds * 1000).toLocaleDateString('en-US', {
+                      month: 'long', 
+                      day: 'numeric', 
+                    })}
+                  </Text>
+                  <Text style={styles.historyTextDis}>{(item.distance || 0).toFixed(2)} km</Text>
+                  <View style={styles.calnspeed}>
+                    <Text style={styles.historyText}>
+                      {(item.calories || 0).toFixed(2)} kcal   {item.time && item.time > 0 ? ((item.distance || 0) / (item.time || 1) * 3600).toFixed(2) : 0} km/h
+                    </Text>
+                  </View>
+                  {/* Tanda > untuk menuju ke detail */}
+                  <TouchableOpacity onPress={() => handleDetailNavigation(item)} style={styles.arrowContainer}>
+                    <Entypo name="chevron-small-right" size={30} color="gray" />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           )}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       </View>
     </View>
@@ -209,9 +216,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#AAC7D8",
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    // paddingTop: height * 0.1,
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingBottom: height * 0.07,
     paddingHorizontal: width * 0.05,
   },
@@ -300,13 +306,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 5,
     borderRightWidth: 1,
-    borderRightColor: "#AAC7D8",
+    borderRightColor: '#AAC7D8',
+    flexDirection: 'row',
   },
   sectionLast: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   icon: {
     width: 25,
@@ -325,7 +332,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#888888",
   },
-
   HisList: {
     flex: 1,
     padding: 10,
@@ -334,9 +340,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 80,
   },
-  historyItem: {
+  wrapper: {
+    borderWidth: 3,
+    borderColor: '#AAC7D7',
     padding: 10,
-    marginVertical: 5,
+    marginVertical: 3,
     backgroundColor: "#f0f0f0",
     borderRadius: 15,
     width: width * 0.87,
@@ -345,20 +353,64 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
-    backgroundColor: "white",
-    width: width * 0.87,
-    borderWidth: 3,
-    borderColor: "#AAC7D7",
+    backgroundColor: 'white',
+    marginBottom: height * 0.15
+  },
+  historyTextDis: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+    marginLeft: width * 0.04,
+
   },
   historyText: {
     fontSize: 14,
     marginBottom: 5,
-    color: "#333",
+    color: 'gray',
+    marginLeft: width * 0.04,
+  },
+  mapContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginVertical: 10,
   },
   map: {
-    width: "100%",
-    height: 200,
-    marginTop: 10,
+    height: height * 0.09,
+    width: height * 0.09,
+    borderRadius: 20,
+    marginTop: height * 0.0001,
+    left: width * 0.02,
+  },
+  textContainerRight: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  calnspeed: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  arrowContainer: {
+    position: 'absolute',
+    right: width * 0.05,
+    top: height * 0.037,
+    transform: [{ translateY: -10 }],
+  },
+  arrowText: {
+    fontSize: 24,
+    color: 'gray',
+  },
+  separator: {
+    left: width * 0.1,
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 5,
+    width: '70%',
+    alignItems: 'center'
   },
 });
 
