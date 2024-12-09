@@ -74,7 +74,11 @@ export default function BottomNavbar({ user, handleAuthentication }) {
           },
         }}
       >
-        {() => <RunHistory route={{ params: { uid: user.uid } }} />}
+        {() => (
+          <RunHistory
+            route={{ params: { uid: user.uid, displayName: user.displayName } }}
+          />
+        )}
       </Tab.Screen>
       {/* <Tab.Screen
         name="Bayar"

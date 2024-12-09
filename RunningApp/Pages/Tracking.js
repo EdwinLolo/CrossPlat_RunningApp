@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,6 +19,7 @@ const haversine = (coords1, coords2) => {
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
   return R * c; // Dalam kilometer
 };
 
@@ -194,19 +195,60 @@ const Tracking = () => {
         )}
       </MapView>
       <View style={styles.infoContainer}>
-        <Text>Total Jarak: {distance.toFixed(2)} km</Text>
-        <Text>Pace: {calculatePace().toFixed(2)} menit/km</Text>
-        <Text>
-          Waktu: {Math.floor(elapsedTime / 60)} menit {elapsedTime % 60} detik
-        </Text>
-        <Text>Kalori Terbakar: {calories.toFixed(2)} kcal</Text>
-        <Text>Langkah: {steps}</Text>
-        <Button title="Start" onPress={startTracking} disabled={tracking} />
-        <Button title="Stop" onPress={stopTracking} disabled={!tracking} />
-        <Button
+        <View style={styles.RunningContainer}>
+          <View style={styles.Running}>
+            <Text style={styles.RunningText}>Running Time:</Text>
+            <Text style={styles.RunningTime}>
+              {String(Math.floor(elapsedTime / 3600)).padStart(2, "0")} :{" "}
+              {String(Math.floor((elapsedTime % 3600) / 60)).padStart(2, "0")} :{" "}
+              {String(elapsedTime % 60).padStart(2, "0")}
+            </Text>
+          </View>
+          <View style={styles.Start}>
+            <TouchableOpacity
+              style={[
+                styles.StartButton,
+                { backgroundColor: tracking ? "gray" : "#5D63D1" },
+              ]}
+              onPress={startTracking}
+              disabled={tracking}
+            >
+              <Text style={{ color: "white" }}>Start</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.StartButton,
+                { backgroundColor: tracking ? "#5D63D1" : "gray" },
+              ]}
+              onPress={stopTracking}
+              disabled={!tracking}
+            >
+              <Text style={{ color: "white" }}>Stop</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={[styles.JarakContainer, { backgroundColor: "gray" }]}>
+          <View style={styles.Jarak}>
+            <Text>{distance.toFixed(2)}</Text>
+            <Text>km</Text>
+          </View>
+          <View style={styles.Jarak}>
+            <Text>{calculatePace().toFixed(2)}</Text>
+            <Text>menit/km</Text>
+          </View>
+          <View style={styles.Jarak}>
+            <Text>{calories.toFixed(2)}</Text>
+            <Text>kcal</Text>
+          </View>
+          <View style={styles.Jarak1}>
+            <Text>{steps}</Text>
+            <Text>steps</Text>
+          </View>
+        </View>
+        {/* <Button
           title="View Run History"
           onPress={() => navigation.navigate("RunHistory", { uid: uid })}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -221,12 +263,68 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     position: "absolute",
-    bottom: 100,
-    left: 10,
-    right: 10,
+    bottom: 60,
+    left: 30,
+    right: 30,
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 15,
+    borderWidth: 3,
+    borderColor: "#AAC7D7",
+  },
+  RunningContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  Running: {
+    flexDirection: "column",
+    width: "50%",
+  },
+  RunningText: {
+    fontSize: 14,
+  },
+  RunningTime: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  Start: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+  },
+  StartButton: {
+    padding: 10,
+    borderRadius: 10,
+    marginRight: 5,
+    width: "40%",
+    alignItems: "center",
+  },
+  JarakContainer: {
+    width: "100%",
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "space-evenly",
+    borderRadius: 10,
+    padding: 15,
+  },
+  Jarak: {
+    flex: 1,
+    width: "25%",
+    paddingHorizontal: 5,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRightWidth: 1,
+    borderColor: "white",
+  },
+  Jarak1: {
+    width: "25%",
+    paddingHorizontal: 5,
+    flex: 1,
+    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
   },
 });
