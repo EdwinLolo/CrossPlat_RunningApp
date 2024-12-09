@@ -1,29 +1,28 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#AAC7D8",
   },
   header: {
-    width: 360,
+    width: "100%",
     height: 200,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DFEBF6',
-    position: 'absolute',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#DFEBF6",
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     paddingTop: 40, // to account for status bar
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 20,
     top: 45, // to account for status bar
   },
@@ -31,6 +30,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     top: -5, // to account for status bar
+  },
+  CommunityListContainer: {
+    flex: 1,
+    padding: 20,
   },
   addButton: {
     backgroundColor: "#4CAF50",
@@ -56,9 +59,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   communityItemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   communityTextContainer: {
     flex: 1,
@@ -74,11 +77,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   navButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   userProfileContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   userImage: {
     width: 70,
@@ -88,8 +91,8 @@ const styles = StyleSheet.create({
   emailText: {
     fontSize: 18,
     fontWeight: "bold",
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     top: -10,
     left: 5,
   },

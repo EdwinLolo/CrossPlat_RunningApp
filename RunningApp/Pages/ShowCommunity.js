@@ -64,46 +64,48 @@ const ShowCommunity = () => {
           <Text style={styles.emailText}>User not available</Text>
         )}
       </View>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Community", {
-            user: { uid, displayName },
-          })
-        }
-        style={styles.addButton}
-      >
-        <Text style={styles.addButtonText}>Add Community</Text>
-      </TouchableOpacity>
-      <ScrollView style={styles.communityList}>
-        {communities.map((community) => (
-          <TouchableOpacity
-            key={community.id}
-            style={styles.communityItem}
-            onPress={() =>
-              navigation.navigate("CommunityDetail", {
-                communityId: community.id,
-                communityName: community.name,
-                isAdmin: community.adminId === uid,
-              })
-            }
-          >
-            <View style={styles.communityItemContent}>
-              {community.logo && (
-                <Image source={{ uri: community.logo }} style={styles.logo} />
-              )}
-              <View style={styles.communityTextContainer}>
-                <Text style={styles.communityTitle}>
-                  Community: {community.Title}
-                </Text>
-                <Text>Location: {community.location}</Text>
-                <Text>Description: {community.description}</Text>
-                <Text>Admin: {community.adminName}</Text>
+      <View style={styles.CommunityListContainer}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Community", {
+              user: { uid, displayName },
+            })
+          }
+          style={styles.addButton}
+        >
+          <Text style={styles.addButtonText}>Add Community</Text>
+        </TouchableOpacity>
+        <ScrollView style={styles.communityList}>
+          {communities.map((community) => (
+            <TouchableOpacity
+              key={community.id}
+              style={styles.communityItem}
+              onPress={() =>
+                navigation.navigate("CommunityDetail", {
+                  communityId: community.id,
+                  communityName: community.Title,
+                  isAdmin: community.adminId === uid,
+                })
+              }
+            >
+              <View style={styles.communityItemContent}>
+                {community.logo && (
+                  <Image source={{ uri: community.logo }} style={styles.logo} />
+                )}
+                <View style={styles.communityTextContainer}>
+                  <Text style={styles.communityTitle}>
+                    Community: {community.Title}
+                  </Text>
+                  <Text>Location: {community.location}</Text>
+                  <Text>Description: {community.description}</Text>
+                  <Text>Admin: {community.adminName}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="gray" />
               </View>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
