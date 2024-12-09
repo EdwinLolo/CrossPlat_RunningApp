@@ -63,7 +63,7 @@ const RunHistory = ({ route }) => {
   };
 
   const handleDetailNavigation = (item) => {
-    navigation.navigate('RunHistoryDetail', { historyItem: item }); // Mengirimkan item ke halaman detail
+    navigation.navigate('RunHistoryDetail', { historyItem: item });
   };
 
   return (
@@ -136,6 +136,7 @@ const RunHistory = ({ route }) => {
 
       <View style={styles.HisList}>
         <FlatList
+          style={styles.wrapper}
           data={history}
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => (
@@ -335,9 +336,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  historyItem: {
+  wrapper:{
+    borderWidth: 3,
+    borderColor: '#AAC7D7',
     padding: 10,
-    marginVertical: 5,
+    marginVertical: 3,
     backgroundColor: "#f0f0f0",
     borderRadius: 15,
     width: width * 0.87,
@@ -347,21 +350,20 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
     backgroundColor: 'white',
-    borderWidth: 3,
-    borderColor: '#AAC7D7',
+    marginBottom: height * 0.15
   },
-  historyTextDis:{
+  historyTextDis: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
     color: '#333',
-    marginLeft: width * 0.02,
+    marginLeft: width * 0.04,
   },
   historyText: {
     fontSize: 14,
     marginBottom: 5,
     color: 'gray',
-    marginLeft: width * 0.02,
+    marginLeft: width * 0.04,
   },
   mapContainer: {
     flexDirection: 'row',
@@ -374,7 +376,8 @@ const styles = StyleSheet.create({
     height: height * 0.09,
     width: height * 0.09,
     borderRadius: 20,
-    marginTop: height * 0.0001
+    marginTop: height * 0.0001,
+    left: width * 0.02,
   },
   textContainerRight: {
     flex: 1,
@@ -383,8 +386,8 @@ const styles = StyleSheet.create({
   },
   calnspeed: {
     flexDirection: 'row',
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   arrowContainer: {
     position: 'absolute',
