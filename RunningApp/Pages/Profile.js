@@ -10,8 +10,8 @@ const Profile = ({ user = {}, handleAuthentication = () => {} }) => {
       <View style={styles.UserContainer}>
         <Text style={styles.title}>Profile</Text>
         {user ? (
-          <View>
-            <View style={styles.userProfileContainer}>
+          <View style={styles.userProfileContainer}>
+            <View>
               <Image
                 style={styles.userImage}
                 source={require("../assets/profile.png")}

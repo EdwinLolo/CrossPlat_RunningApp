@@ -13,11 +13,15 @@ import { FIREBASE_DB, FIREBASE_STORAGE } from "../config/firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import styles from "./PagesStyle/Community.style";
+import { Ionicons } from "@expo/vector-icons";
 import { Title } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 
 const Community = () => {
+  const navigation = useNavigation();
+
   const route = useRoute();
   const { uid, displayName } = route.params?.user || {}; // Ambil uid dan displayName
 
@@ -104,7 +108,13 @@ const Community = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create a New Communityasdasd</Text>
+      <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+      <Text style={styles.title}>Create a New Community</Text>
       <TextInput
         style={styles.input}
         placeholder="Community Name"
@@ -131,51 +141,17 @@ const Community = () => {
           <Text style={styles.imageText}>Pick a Logo</Text>
         )}
       </TouchableOpacity>
-      <Button
+      <TouchableOpacity
         title={loading ? "Creating..." : "Create Community"}
         onPress={createCommunity}
         disabled={loading}
-      />
+        style={styles.createButton}
+      >
+        <Text style={styles.textCreateButton}>Create </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    flex: 1,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 15,
-  },
-  imagePicker: {
-    height: 150,
-    width: 150,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-    borderRadius: 75,
-    overflow: "hidden",
-  },
-  logo: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 75,
-  },
-  imageText: {
-    color: "#666",
-  },
-});
 
 export default Community;
