@@ -13,6 +13,9 @@ import { collection, addDoc } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+
+import styles from "../Pages/PagesStyle/AddCommunity.style";
 
 const AddCommunityDetail = () => {
   const navigation = useNavigation();
@@ -90,7 +93,13 @@ const AddCommunityDetail = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add New Post</Text>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+      <Text style={styles.title}>Add a New Post</Text>
       <TextInput
         style={styles.input}
         placeholder="Title"
@@ -117,47 +126,16 @@ const AddCommunityDetail = () => {
           <Text style={styles.imageText}>Pick an Image</Text>
         )}
       </TouchableOpacity>
-      <Button
+      <TouchableOpacity
         title={loading ? "Adding Post..." : "Add Post"}
         onPress={handleAddPost}
         disabled={loading}
-      />
+        style={styles.createButton}
+      >
+        <Text style={styles.textCreateButton}>Add Post</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
-  },
-  imagePicker: {
-    height: 100,
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
-  previewImage: {
-    width: "100%",
-    height: "100%",
-  },
-  imageText: {
-    color: "#666",
-  },
-});
 
 export default AddCommunityDetail;

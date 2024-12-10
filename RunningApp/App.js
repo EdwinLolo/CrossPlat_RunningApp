@@ -70,7 +70,7 @@ export default function App() {
         <Stack.Screen
           name="AddCommunityDetail"
           component={AddCommunityDetail}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
         <Stack.Screen
