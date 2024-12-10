@@ -109,11 +109,11 @@ const Community = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={styles.title}>Create a New Community</Text>
       <TextInput
         style={styles.input}
@@ -152,6 +152,5 @@ const Community = () => {
     </View>
   );
 };
-
 
 export default Community;

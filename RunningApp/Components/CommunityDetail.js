@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { FIREBASE_DB } from "../config/firebaseConfig";
@@ -18,14 +19,18 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { Ionicons } from "@expo/vector-icons";
+
+import styles from "../Pages/PagesStyle/CommunityDetail.style";
 
 const CommunityDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { communityId, communityName, isAdmin } = route.params;
+  const { communityId, communityName, isAdmin, communityLogo } = route.params;
 
   const [posts, setPosts] = useState([]);
 
+  // console.log(communityLogo);
   // Fungsi untuk mengambil postingan dari Firestore
   const fetchPosts = async () => {
     try {
@@ -67,77 +72,79 @@ const CommunityDetail = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Posts in {communityName}</Text>
+      <View style={styles.header}>
+        <View style={styles.headerButton}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
 
-      {isAdmin && (
-        <Button
-          title="Add New Post"
-          onPress={() =>
-            navigation.navigate("AddCommunityDetail", { communityId })
-          }
-        />
-      )}
+          <Text style={styles.title}>Community</Text>
 
-      <FlatList
-        data={posts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.postItem}>
-            <Text style={styles.postTitle}>{item.title}</Text>
-            <Text>{item.description}</Text>
-            <Text>Location: {item.location}</Text>
-            {item.image && (
-              <Image source={{ uri: item.image }} style={styles.postImage} />
-            )}
-            <Text style={styles.timestamp}>
-              {item.createdAt.toDate().toString()}
-            </Text>
+          {isAdmin && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("AddCommunityDetail", { communityId })
+              }
+              style={styles.addButton}
+            >
+              <Text style={styles.addButtonText}>Add</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
-            {isAdmin && (
-              <Button
-                title="Delete Post"
-                color="red"
-                onPress={() => handleDeletePost(item.id)}
-              />
-            )}
+        <View>
+          <View style={styles.userProfileContainer}>
+            <Image
+              style={styles.userImage}
+              source={
+                communityLogo
+                  ? { uri: communityLogo }
+                  : require("../assets/profile.png")
+              }
+              onError={(e) =>
+                console.log("Error loading image:", e.nativeEvent.error)
+              }
+            />
+            <Text style={styles.emailText}>{communityName}</Text>
           </View>
-        )}
-      />
+        </View>
+      </View>
+
+      {/* <Text style={styles.title}>Posts in {communityName}</Text> */}
+
+      <View style={styles.postContainer}>
+        <FlatList
+          style={styles.postItemContainer}
+          data={posts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.postItem}>
+              <Text style={styles.postTitle}>{item.title}</Text>
+              <Text>{item.description}</Text>
+              <Text>Location: {item.location}</Text>
+              {item.image && (
+                <Image source={{ uri: item.image }} style={styles.postImage} />
+              )}
+              <Text style={styles.timestamp}>
+                {item.createdAt.toDate().toString()}
+              </Text>
+
+              {isAdmin && (
+                <Button
+                  title="Delete Post"
+                  color="red"
+                  onPress={() => handleDeletePost(item.id)}
+                />
+              )}
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  postItem: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  postTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  postImage: {
-    width: "100%",
-    height: 150,
-    marginTop: 10,
-    borderRadius: 5,
-  },
-  timestamp: {
-    fontSize: 10,
-    color: "#666",
-    marginTop: 5,
-  },
-});
 
 export default CommunityDetail;

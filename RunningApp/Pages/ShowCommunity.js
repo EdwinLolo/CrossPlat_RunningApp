@@ -42,13 +42,27 @@ const ShowCommunity = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Community</Text>
+        <View style={styles.headerButton}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+
+          <Text style={styles.title}>Community</Text>
+
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Community", {
+                user: { uid, displayName },
+              })
+            }
+            style={styles.addButton}
+          >
+            <Text style={styles.addButtonText}>Add</Text>
+          </TouchableOpacity>
+        </View>
         {uid ? (
           <View>
             <View style={styles.userProfileContainer}>
@@ -65,16 +79,6 @@ const ShowCommunity = () => {
         )}
       </View>
       <View style={styles.CommunityListContainer}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Community", {
-              user: { uid, displayName },
-            })
-          }
-          style={styles.addButton}
-        >
-          <Text style={styles.addButtonText}>Add Community</Text>
-        </TouchableOpacity>
         <ScrollView style={styles.communityList}>
           {communities.map((community) => (
             <TouchableOpacity
@@ -85,6 +89,7 @@ const ShowCommunity = () => {
                   communityId: community.id,
                   communityName: community.Title,
                   isAdmin: community.adminId === uid,
+                  communityLogo: community.logo, // Tambahkan ini
                 })
               }
             >

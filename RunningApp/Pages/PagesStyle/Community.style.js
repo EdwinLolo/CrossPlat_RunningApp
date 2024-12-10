@@ -7,6 +7,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#AAC7D8",
   },
+  headerButton: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   backButton: {
     position: "absolute",
     left: 10,
@@ -20,6 +30,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   input: {
     borderWidth: 1,
     borderColor: "#DFEBF6",

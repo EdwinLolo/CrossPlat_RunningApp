@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 200,
+    height: 250,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     justifyContent: "center",
@@ -41,10 +41,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     top: -5, // to account for status bar
   },
-  CommunityListContainer: {
-    flex: 1,
-    padding: 20,
-    marginTop: 200,
+  userProfileContainer: {
+    alignItems: "center",
+  },
+  emailText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+    top: -10,
+    left: 5,
   },
   addButton: {
     position: "absolute",
@@ -55,59 +61,51 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // marginTop: 220, // to account for header height
   },
-  addButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  communityList: {
-    marginTop: 20,
-  },
-  communityItem: {
-    backgroundColor: "white",
-    padding: 20,
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  communityItemContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  communityTextContainer: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  communityTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  logo: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  navButton: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  userProfileContainer: {
-    alignItems: "center",
-  },
   userImage: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
     borderRadius: 50,
   },
   emailText: {
     fontSize: 18,
+    // fontWeight: "bold",
+    marginTop: 10,
+  },
+  postContainer: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 5,
+    // backgroundColor: "#f0f0f0",
+    marginBottom: 10,
+    marginTop: 250,
+  },
+  postItemContainer: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#f0f0f0",
+    marginBottom: 10,
+  },
+  postItem: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  postTitle: {
+    fontSize: 16,
     fontWeight: "bold",
-    justifyContent: "center",
-    alignItems: "center",
-    top: -10,
-    left: 5,
+  },
+  postImage: {
+    width: "100%",
+    height: 150,
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  timestamp: {
+    fontSize: 10,
+    color: "#666",
+    marginTop: 5,
   },
 });
 
