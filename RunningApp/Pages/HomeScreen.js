@@ -1,14 +1,21 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { launchImageLibrary } from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import Octicons from '@expo/vector-icons/Octicons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Entypo from '@expo/vector-icons/Entypo';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { launchImageLibrary } from "react-native-image-picker";
+import Icon from "react-native-vector-icons/FontAwesome";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Octicons from "@expo/vector-icons/Octicons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Entypo from "@expo/vector-icons/Entypo";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
@@ -20,7 +27,7 @@ const HomeScreen = ({ user }) => {
   const progress = (distanceDone / goalDistance) * 100;
 
   const handleImageSelect = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 0.5 }, (response) => {
+    launchImageLibrary({ mediaType: "photo", quality: 0.5 }, (response) => {
       if (response.assets && response.assets.length > 0) {
         setPhotoUri(response.assets[0].uri);
       }
@@ -34,7 +41,11 @@ const HomeScreen = ({ user }) => {
         <View style={styles.header}>
           <TouchableOpacity onPress={handleImageSelect}>
             <Image
-              source={{ uri: photoUri || 'https://koreajoongangdaily.joins.com/data/photo/2023/10/09/b37d6ba6-a639-4674-8594-f8e96bc0587e.jpg' }}  // Gunakan gambar default atau gambar input pengguna
+              source={{
+                uri:
+                  photoUri ||
+                  "https://koreajoongangdaily.joins.com/data/photo/2023/10/09/b37d6ba6-a639-4674-8594-f8e96bc0587e.jpg",
+              }} // Gunakan gambar default atau gambar input pengguna
               style={styles.avatar}
             />
           </TouchableOpacity>
@@ -52,10 +63,13 @@ const HomeScreen = ({ user }) => {
         <View style={styles.goalCard}>
           <View style={styles.goalHeader}>
             <View style={styles.HeadText}>
-              <Text style={styles.goalText}>Week goal  </Text>
-              <Text style={[styles.goalText, { color: '#5D63D1' }]}>50 km</Text>
+              <Text style={styles.goalText}>Week goal </Text>
+              <Text style={[styles.goalText, { color: "#5D63D1" }]}>50 km</Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Tracking")} style={styles.arrowButtonGoal}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Tracking")}
+              style={styles.arrowButtonGoal}
+            >
               <Entypo name="chevron-small-right" size={30} color="#333333" />
             </TouchableOpacity>
           </View>
@@ -66,8 +80,18 @@ const HomeScreen = ({ user }) => {
           </View>
 
           <View style={styles.progressBarContainer}>
-            <View style={[styles.progressBar, { width: `${progress}%`, backgroundColor: '#5D63D1' }]} />
-            <View style={[styles.progressBar, { width: `${100 - progress}%`, backgroundColor: '#d3d3d3' }]} />
+            <View
+              style={[
+                styles.progressBar,
+                { width: `${progress}%`, backgroundColor: "#5D63D1" },
+              ]}
+            />
+            <View
+              style={[
+                styles.progressBar,
+                { width: `${100 - progress}%`, backgroundColor: "#d3d3d3" },
+              ]}
+            />
           </View>
         </View>
 
@@ -83,9 +107,16 @@ const HomeScreen = ({ user }) => {
             style={styles.button}
           >
             <View style={styles.buttonContent}>
-              <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} />
+              <Icon
+                name="home"
+                size={110}
+                color="#AAC7D8"
+                style={styles.iconCoTra}
+              />
               <Text style={styles.buttonTitle}>Join a Community</Text>
-              <Text style={styles.buttonSubtitle}>Running are more fun when we're together</Text>
+              <Text style={styles.buttonSubtitle}>
+                Running are more fun when we're together
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -100,9 +131,16 @@ const HomeScreen = ({ user }) => {
           >
             <View style={styles.buttonContent}>
               {/* <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} /> */}
-              <MaterialCommunityIcons name="run-fast" size={85} color="#AAC7D8" style={styles.iconTra} />
+              <MaterialCommunityIcons
+                name="run-fast"
+                size={85}
+                color="#AAC7D8"
+                style={styles.iconTra}
+              />
               <Text style={styles.buttonTitle}>Tracking</Text>
-              <Text style={styles.buttonSubtitle}>let's achive your weekly progress</Text>
+              <Text style={styles.buttonSubtitle}>
+                let's achive your weekly progress
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -110,14 +148,13 @@ const HomeScreen = ({ user }) => {
         {/* RunHistory Button */}
         <View style={styles.RunHisbtn}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("RunHistory", { uid: user.uid })}
+            onPress={() => navigation.navigate("History", { uid: user.uid })}
             style={styles.Runbtn}
           >
             {/* Title and Arrow */}
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Total progress</Text>
               <Entypo name="chevron-small-right" size={30} color="#333333" />
-
             </View>
 
             {/* Box with 3 sections */}
@@ -125,7 +162,7 @@ const HomeScreen = ({ user }) => {
               {/* First Section: Running */}
               <View style={styles.section}>
                 <FontAwesome6 name="person-running" size={30} color="red" />
-                <Text>   </Text>
+                <Text> </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>103,2</Text>
                   <Text style={styles.unitText}>km</Text>
@@ -135,7 +172,7 @@ const HomeScreen = ({ user }) => {
               {/* Second Section: Stopwatch */}
               <View style={styles.section}>
                 <Octicons name="stopwatch" size={35} color="purple" />
-                <Text>   </Text>
+                <Text> </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>16,9</Text>
                   <Text style={styles.unitText}>hr</Text>
@@ -145,7 +182,7 @@ const HomeScreen = ({ user }) => {
               {/* Third Section: Calories */}
               <View style={styles.sectionLast}>
                 <FontAwesome5 name="fire-alt" size={35} color="orange" />
-                <Text>   </Text>
+                <Text> </Text>
                 <View style={styles.textContainer}>
                   <Text style={styles.valueText}>1,5</Text>
                   <Text style={styles.unitText}>kcal</Text>
@@ -154,34 +191,33 @@ const HomeScreen = ({ user }) => {
             </View>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );
 };
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    backgroundColor: '#ffffff',
+    justifyContent: "flex-start",
+    backgroundColor: "#ffffff",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingTop: height * 0.15,
     paddingHorizontal: width * 0.05,
   },
   bluebg: {
-    width: '100%',
+    width: "100%",
     height: height * 0.24,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#AAC7D8',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#AAC7D8",
   },
   avatar: {
     width: 50,
@@ -191,38 +227,38 @@ const styles = StyleSheet.create({
   },
   textContainerHead: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   rowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   hello: {
     fontSize: 15,
     paddingLeft: 5,
-    color: '#ffffff',
+    color: "#ffffff",
   },
   greetingText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    fontWeight: "bold",
+    color: "#ffffff",
   },
   levelText: {
     fontSize: 13,
-    color: '#ffffff',
+    color: "#ffffff",
     paddingHorizontal: 5,
   },
   btncontainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     height: height * 0.98,
-    position: 'absolute',
+    position: "absolute",
     top: 0,
   },
   button: {
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -230,16 +266,16 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.01,
     padding: 15,
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     width: width * 0.53,
     height: width * 0.45,
     borderWidth: 2,
-    borderColor: '#AAC7D8',
+    borderColor: "#AAC7D8",
   },
   buttonTra: {
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -247,18 +283,18 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.01,
     padding: 15,
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     width: width * 0.4,
     height: width * 0.45,
     borderWidth: 2,
-    borderColor: '#AAC7D8',
+    borderColor: "#AAC7D8",
   },
   buttonContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   iconCoTra: {
     marginBottom: 5,
@@ -269,29 +305,29 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     fontSize: 17,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   buttonSubtitle: {
     fontSize: 12,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
   },
   buttonText: {
-    color: 'black',
+    color: "black",
     fontSize: 16,
   },
   RunHisbtn: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     height: height * 1.3,
-    position: 'absolute',
+    position: "absolute",
     top: 0,
   },
   Runbtn: {
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -299,57 +335,57 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.05,
     padding: 15,
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     width: width * 0.87,
     height: width * 0.35,
     borderWidth: 2,
-    borderColor: '#AAC7D7',
+    borderColor: "#AAC7D7",
     marginTop: height * 0.14,
   },
   titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
     paddingBottom: 5,
   },
   titleText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
 
   arrowText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#AAC7D8',
+    fontWeight: "bold",
+    color: "#AAC7D8",
   },
   progressBox: {
-    flexDirection: 'row',
+    flexDirection: "row",
     width: width * 0.83,
     height: height * 0.09,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 2,
-    borderColor: '#AAC7D7',
+    borderColor: "#AAC7D7",
     borderRadius: 6,
     marginTop: 5,
   },
   section: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 5,
     borderRightWidth: 1,
-    borderRightColor: '#AAC7D8',
-    flexDirection: 'row',
+    borderRightColor: "#AAC7D8",
+    flexDirection: "row",
   },
   sectionLast: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
   icon: {
     width: 25,
@@ -358,46 +394,46 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
 
   valueText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
 
   unitText: {
     fontSize: 11,
-    color: '#888888',
+    color: "#888888",
   },
   goalCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: width * 0.045,
     borderRadius: 17,
-    width: '87%',
-    marginBottom: height * 0.00,
+    width: "87%",
+    marginBottom: height * 0.0,
     marginTop: height * 0.04,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 4,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderWidth: 2,
-    borderColor: '#DFEBF7',
+    borderColor: "#DFEBF7",
   },
   goalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   goalText: {
     fontSize: width * 0.04,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   HeadText: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   arrowButton: {
     padding: width * 0.02,
@@ -406,34 +442,34 @@ const styles = StyleSheet.create({
   arrowButtonGoal: {
     padding: width * 0.02,
     borderRadius: 15,
-    marginLeft: width * 0.37
+    marginLeft: width * 0.37,
   },
   arrowText: {
     fontSize: width * 0.06,
-    color: '#000',
+    color: "#000",
   },
   goalInfo: {
     marginTop: height * 0.003,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   doneText: {
-    color: 'black',
+    color: "black",
   },
   leftText: {
-    color: '#a0a0a0',
+    color: "#a0a0a0",
   },
   progressBarContainer: {
     marginTop: height * 0.01,
     marginBottom: height * 0.02,
     height: 10,
-    width: '100%',
+    width: "100%",
     borderRadius: 5,
-    overflow: 'hidden',
-    flexDirection: 'row',
+    overflow: "hidden",
+    flexDirection: "row",
   },
   progressBar: {
-    height: '100%',
+    height: "100%",
   },
 });
 

@@ -58,7 +58,7 @@ export default function App() {
         <Stack.Screen
           name="Tracking"
           component={Tracking}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
           style={{ backgroundColor: "#FFFFFF" }}
         />
         <Stack.Screen

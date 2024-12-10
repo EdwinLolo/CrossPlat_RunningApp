@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import * as Location from "expo-location";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { doc, collection, addDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
 import { Pedometer } from "expo-sensors";
+import { Ionicons } from "@expo/vector-icons";
+
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Octicons from "@expo/vector-icons/Octicons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Entypo from "@expo/vector-icons/Entypo";
 
 // Fungsi untuk menghitung jarak menggunakan rumus Haversine
 const haversine = (coords1, coords2) => {
@@ -24,7 +37,15 @@ const haversine = (coords1, coords2) => {
 };
 
 // Fungsi untuk menyimpan riwayat perjalanan ke Firestore
-const saveHistory = async (route, distance, time, calories, steps, uid) => {
+const saveHistory = async (
+  route,
+  distance,
+  time,
+  calories,
+  steps,
+  pace,
+  uid
+) => {
   try {
     const historyRef = collection(FIREBASE_DB, "users", uid, "history");
     await addDoc(historyRef, {
@@ -33,6 +54,7 @@ const saveHistory = async (route, distance, time, calories, steps, uid) => {
       time,
       calories,
       steps,
+      pace, // Menyimpan pace
       timestamp: new Date(),
     });
     console.log("History saved successfully");
@@ -171,7 +193,15 @@ const Tracking = () => {
       setTracking(false);
       const pace = calculatePace();
       const totalCalories = calculateCalories();
-      saveHistory(route, distance, elapsedTime, totalCalories, steps, uid); // Menyimpan riwayat ke Firestore
+      saveHistory(
+        route,
+        distance,
+        elapsedTime,
+        totalCalories,
+        steps,
+        pace,
+        uid
+      ); // Menyimpan riwayat ke Firestore
     } else {
       alert("Belum ada data untuk disimpan. Mulai tracking terlebih dahulu.");
     }
@@ -189,70 +219,103 @@ const Tracking = () => {
         }}
         showsUserLocation
       >
-        <Polyline coordinates={route} strokeColor="blue" strokeWidth={3} />
+        <Polyline coordinates={route} strokeColor="red" strokeWidth={3} />
         {route.length > 0 && (
           <Marker coordinate={route[route.length - 1]} title="Posisi Terkini" />
         )}
       </MapView>
-      <View style={styles.infoContainer}>
-        <View style={styles.RunningContainer}>
-          <View style={styles.Running}>
-            <Text style={styles.RunningText}>Running Time:</Text>
-            <Text style={styles.RunningTime}>
-              {String(Math.floor(elapsedTime / 3600)).padStart(2, "0")} :{" "}
-              {String(Math.floor((elapsedTime % 3600) / 60)).padStart(2, "0")} :{" "}
-              {String(elapsedTime % 60).padStart(2, "0")}
+
+      <View style={styles.headerButton}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Tracking</Text>
+      </View>
+
+      <View style={styles.Runbtn}>
+        {/* Title and Arrow */}
+        <View style={styles.titleContainer}>
+          <View style={styles.RunningContainer}>
+            <View style={styles.Running}>
+              <Text style={styles.titleText}>Running Time:</Text>
+              <Text style={styles.RunningTime}>
+                {String(Math.floor(elapsedTime / 3600)).padStart(2, "0")} :{" "}
+                {String(Math.floor((elapsedTime % 3600) / 60)).padStart(2, "0")}{" "}
+                : {String(elapsedTime % 60).padStart(2, "0")}
+              </Text>
+            </View>
+            <View style={styles.Start}>
+              <TouchableOpacity
+                style={[
+                  styles.StartButton,
+                  { backgroundColor: tracking ? "gray" : "#5D63D1" },
+                ]}
+                onPress={startTracking}
+                disabled={tracking}
+              >
+                <Text style={{ color: "white" }}>Start</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.StartButton,
+                  { backgroundColor: tracking ? "#5D63D1" : "gray" },
+                ]}
+                onPress={stopTracking}
+                disabled={!tracking}
+              >
+                <Text style={{ color: "white" }}>Stop</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.detailText}>
+              Steps: {calculatePace().toFixed(2)}
             </Text>
-          </View>
-          <View style={styles.Start}>
-            <TouchableOpacity
-              style={[
-                styles.StartButton,
-                { backgroundColor: tracking ? "gray" : "#5D63D1" },
-              ]}
-              onPress={startTracking}
-              disabled={tracking}
-            >
-              <Text style={{ color: "white" }}>Start</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.StartButton,
-                { backgroundColor: tracking ? "#5D63D1" : "gray" },
-              ]}
-              onPress={stopTracking}
-              disabled={!tracking}
-            >
-              <Text style={{ color: "white" }}>Stop</Text>
-            </TouchableOpacity>
+            <Text style={styles.detailText}>Pace: {steps}</Text>
           </View>
         </View>
-        <View style={[styles.JarakContainer, { backgroundColor: "gray" }]}>
-          <View style={styles.Jarak}>
-            <Text>{distance.toFixed(2)}</Text>
-            <Text>km</Text>
+
+        {/* Box with 3 sections */}
+        <View style={styles.progressBox}>
+          {/* First Section: Running */}
+          <View style={styles.section}>
+            <FontAwesome6 name="person-running" size={30} color="red" />
+            <Text> </Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.valueText}>{distance.toFixed(2)}</Text>
+              <Text style={styles.unitText}>km</Text>
+            </View>
           </View>
-          <View style={styles.Jarak}>
-            <Text>{calculatePace().toFixed(2)}</Text>
-            <Text>menit/km</Text>
+
+          {/* Second Section: Stopwatch */}
+          <View style={styles.section}>
+            <Octicons name="stopwatch" size={35} color="purple" />
+            <Text> </Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.valueText}>{calculatePace().toFixed(2)}</Text>
+              <Text style={styles.unitText}>seconds</Text>
+            </View>
           </View>
-          <View style={styles.Jarak}>
-            <Text>{calories.toFixed(2)}</Text>
-            <Text>kcal</Text>
-          </View>
-          <View style={styles.Jarak1}>
-            <Text>{steps}</Text>
-            <Text>steps</Text>
+
+          {/* Third Section: Calories */}
+          <View style={styles.sectionLast}>
+            <FontAwesome5 name="fire-alt" size={35} color="orange" />
+            <Text> </Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.valueText}>{calories.toFixed(2)}</Text>
+              <Text style={styles.unitText}>kcal</Text>
+            </View>
           </View>
         </View>
-        {/* <Button
-          title="View Run History"
-          onPress={() => navigation.navigate("RunHistory", { uid: uid })}
-        /> */}
       </View>
     </View>
   );
 };
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -261,21 +324,69 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-  infoContainer: {
+  headerButton: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backButton: {
+    position: "absolute",
+    left: 10,
+    top: 55, // to account for status bar
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    top: 40, // to account for status bar
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  Runbtn: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+    padding: 15,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    width: width * 0.87,
+    height: width * 0.55,
+    borderWidth: 2,
+    borderColor: "#AAC7D7",
     position: "absolute",
     bottom: 60,
     left: 30,
     right: 30,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    padding: 10,
-    borderRadius: 15,
-    borderWidth: 3,
-    borderColor: "#AAC7D7",
+  },
+  titleContainer: {
+    flexDirection: "column",
+    // justifyContent: "space-between",
+    // alignItems: "center",
+    width: "100%",
+    paddingBottom: 5,
+  },
+  timeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
   },
   RunningContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
   },
   Running: {
     flexDirection: "column",
@@ -301,31 +412,43 @@ const styles = StyleSheet.create({
     width: "40%",
     alignItems: "center",
   },
-  JarakContainer: {
-    width: "100%",
+  progressBox: {
     flexDirection: "row",
-    marginTop: 10,
-    justifyContent: "space-evenly",
-    borderRadius: 10,
-    padding: 15,
+    width: width * 0.83,
+    height: height * 0.09,
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: "#AAC7D7",
+    borderRadius: 6,
+    marginTop: 5,
+    marginBottom: 5,
   },
-  Jarak: {
+  section: {
     flex: 1,
-    width: "25%",
-    paddingHorizontal: 5,
-    flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
     borderRightWidth: 1,
-    borderColor: "white",
+    borderRightColor: "#AAC7D8",
+    flexDirection: "row",
   },
-  Jarak1: {
-    width: "25%",
-    paddingHorizontal: 5,
+  sectionLast: {
     flex: 1,
-    justifyContent: "center",
-    flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  textContainer: {
+    alignItems: "flex-end",
+  },
+  valueText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "black",
+  },
+  unitText: {
+    fontSize: 11,
+    color: "#888888",
   },
 });
 
