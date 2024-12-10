@@ -122,23 +122,24 @@ const CommunityDetail = () => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.postItem}>
-              <Text style={styles.postTitle}>{item.title}</Text>
-              <Text>{item.description}</Text>
-              <Text>Location: {item.location}</Text>
               {item.image && (
                 <Image source={{ uri: item.image }} style={styles.postImage} />
               )}
-              <Text style={styles.timestamp}>
-                {item.createdAt.toDate().toString()}
-              </Text>
-
-              {isAdmin && (
-                <Button
-                  title="Delete Post"
-                  color="red"
-                  onPress={() => handleDeletePost(item.id)}
-                />
-              )}
+              <View style={styles.postTextContainer}>
+                <Text style={styles.postTitle}>Title: {item.title}</Text>
+                <Text>Desc: {item.description}</Text>
+                <Text>Location: {item.location}</Text>
+                <Text style={styles.timestamp}>
+                  {item.createdAt.toDate().toString()}
+                </Text>
+                {isAdmin && (
+                  <Button
+                    title="Delete Post"
+                    color="red"
+                    onPress={() => handleDeletePost(item.id)}
+                  />
+                )}
+              </View>
             </View>
           )}
         />

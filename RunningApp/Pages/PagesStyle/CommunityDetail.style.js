@@ -87,20 +87,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   postItem: {
+    flexDirection: "row",
     backgroundColor: "#f0f0f0",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    width: "100%",
+  },
+  postImage: {
+    width: width * 0.35,
+    height: height * 0.15,
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  postTextContainer: {
+    flex: 1,
+    justifyContent: "center",
   },
   postTitle: {
     fontSize: 16,
     fontWeight: "bold",
-  },
-  postImage: {
-    width: "100%",
-    height: 150,
-    marginTop: 10,
-    borderRadius: 5,
   },
   timestamp: {
     fontSize: 10,
