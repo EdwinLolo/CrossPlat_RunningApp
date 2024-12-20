@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState, useCallback } from "react";
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { collection, query, getDocs } from "firebase/firestore";
 import { FIREBASE_DB } from "../config/firebaseConfig";
@@ -25,6 +25,9 @@ const RunHistory = ({ route }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [photoUri, setPhotoUri] = useState(null);
+  const [totalDistance, setTotalDistance] = useState(0);
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
   const { uid, displayName } = route.params;
 
   const fetchHistory = async () => {
@@ -39,6 +42,21 @@ const RunHistory = ({ route }) => {
       }));
 
       setHistory(historyData);
+
+      // Menghitung total distance, total calories, dan total time
+      let totalDist = 0;
+      let totalCal = 0;
+      let totalTime = 0;
+
+      historyData.forEach((item) => {
+        totalDist += item.distance || 0;
+        totalCal += item.calories || 0;
+        totalTime += item.time || 0;
+      });
+
+      setTotalDistance(totalDist);
+      setTotalCalories(totalCal);
+      setTotalTime(totalTime);
     } catch (error) {
       console.error("Error fetching history: ", error);
     } finally {
@@ -106,7 +124,7 @@ const RunHistory = ({ route }) => {
               <FontAwesome6 name="person-running" size={30} color="red" />
               <Text> </Text>
               <View style={styles.textContainer}>
-                <Text style={styles.valueText}>103,2</Text>
+                <Text style={styles.valueText}>{totalDistance.toFixed(2)}</Text>
                 <Text style={styles.unitText}>km</Text>
               </View>
             </View>
@@ -114,7 +132,9 @@ const RunHistory = ({ route }) => {
               <Octicons name="stopwatch" size={35} color="purple" />
               <Text> </Text>
               <View style={styles.textContainer}>
-                <Text style={styles.valueText}>16,9</Text>
+                <Text style={styles.valueText}>
+                  {(totalTime / 3600).toFixed(2)}
+                </Text>
                 <Text style={styles.unitText}>hr</Text>
               </View>
             </View>
@@ -122,7 +142,7 @@ const RunHistory = ({ route }) => {
               <FontAwesome5 name="fire-alt" size={35} color="orange" />
               <Text> </Text>
               <View style={styles.textContainer}>
-                <Text style={styles.valueText}>1,5</Text>
+                <Text style={styles.valueText}>{totalCalories.toFixed(2)}</Text>
                 <Text style={styles.unitText}>kcal</Text>
               </View>
             </View>

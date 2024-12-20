@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { launchImageLibrary } from "react-native-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -16,15 +16,52 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { collection, query, getDocs } from "firebase/firestore";
+import { FIREBASE_DB } from "../config/firebaseConfig";
 
 const HomeScreen = ({ user }) => {
   const navigation = useNavigation();
   const [photoUri, setPhotoUri] = useState(null);
+  const [totalDistance, setTotalDistance] = useState(0);
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
 
-  const goalDistance = 50;
-  const distanceDone = 35;
-  const distanceLeft = goalDistance - distanceDone;
-  const progress = (distanceDone / goalDistance) * 100;
+  useEffect(() => {
+    const fetchTotals = async () => {
+      try {
+        const historyRef = collection(
+          FIREBASE_DB,
+          "users",
+          user.uid,
+          "history"
+        );
+        const q = query(historyRef);
+        const querySnapshot = await getDocs(q);
+        const historyData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        let totalDist = 0;
+        let totalCal = 0;
+        let totalTime = 0;
+
+        historyData.forEach((item) => {
+          totalDist += item.distance || 0;
+          totalCal += item.calories || 0;
+          totalTime += item.time || 0;
+        });
+
+        setTotalDistance(totalDist);
+        setTotalCalories(totalCal);
+        setTotalTime(totalTime);
+      } catch (error) {
+        console.error("Error fetching totals: ", error);
+      }
+    };
+
+    fetchTotals();
+  }, [user.uid]);
 
   const handleImageSelect = () => {
     launchImageLibrary({ mediaType: "photo", quality: 0.5 }, (response) => {
@@ -37,7 +74,6 @@ const HomeScreen = ({ user }) => {
   return (
     <View style={styles.container}>
       <View style={styles.bluebg}>
-        {/* Header dengan gambar atau avatar dan input foto */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleImageSelect}>
             <Image
@@ -45,7 +81,7 @@ const HomeScreen = ({ user }) => {
                 uri:
                   photoUri ||
                   "https://koreajoongangdaily.joins.com/data/photo/2023/10/09/b37d6ba6-a639-4674-8594-f8e96bc0587e.jpg",
-              }} // Gunakan gambar default atau gambar input pengguna
+              }}
               style={styles.avatar}
             />
           </TouchableOpacity>
@@ -59,7 +95,6 @@ const HomeScreen = ({ user }) => {
           </View>
         </View>
 
-        {/* Week Goal Card */}
         <View style={styles.goalCard}>
           <View style={styles.goalHeader}>
             <View style={styles.HeadText}>
@@ -83,21 +118,22 @@ const HomeScreen = ({ user }) => {
             <View
               style={[
                 styles.progressBar,
-                { width: `${progress}%`, backgroundColor: "#5D63D1" },
+                { width: `${(35 / 50) * 100}%`, backgroundColor: "#5D63D1" },
               ]}
             />
             <View
               style={[
                 styles.progressBar,
-                { width: `${100 - progress}%`, backgroundColor: "#d3d3d3" },
+                {
+                  width: `${100 - (35 / 50) * 100}%`,
+                  backgroundColor: "#d3d3d3",
+                },
               ]}
             />
           </View>
         </View>
 
-        {/* Buttons */}
         <View style={styles.btncontainer}>
-          {/* Community Button */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("ShowCommunity", {
@@ -120,7 +156,6 @@ const HomeScreen = ({ user }) => {
             </View>
           </TouchableOpacity>
 
-          {/* Tracking Button */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Tracking", {
@@ -130,7 +165,6 @@ const HomeScreen = ({ user }) => {
             style={styles.buttonTra}
           >
             <View style={styles.buttonContent}>
-              {/* <Icon name="home" size={110} color="#AAC7D8" style={styles.iconCoTra} /> */}
               <MaterialCommunityIcons
                 name="run-fast"
                 size={85}
@@ -145,46 +179,46 @@ const HomeScreen = ({ user }) => {
           </TouchableOpacity>
         </View>
 
-        {/* RunHistory Button */}
         <View style={styles.RunHisbtn}>
           <TouchableOpacity
             onPress={() => navigation.navigate("History", { uid: user.uid })}
             style={styles.Runbtn}
           >
-            {/* Title and Arrow */}
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>Total progress</Text>
               <Entypo name="chevron-small-right" size={30} color="#333333" />
             </View>
 
-            {/* Box with 3 sections */}
             <View style={styles.progressBox}>
-              {/* First Section: Running */}
               <View style={styles.section}>
                 <FontAwesome6 name="person-running" size={30} color="red" />
                 <Text> </Text>
                 <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>103,2</Text>
+                  <Text style={styles.valueText}>
+                    {totalDistance.toFixed(2)}
+                  </Text>
                   <Text style={styles.unitText}>km</Text>
                 </View>
               </View>
 
-              {/* Second Section: Stopwatch */}
               <View style={styles.section}>
                 <Octicons name="stopwatch" size={35} color="purple" />
                 <Text> </Text>
                 <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>16,9</Text>
+                  <Text style={styles.valueText}>
+                    {(totalTime / 3600).toFixed(2)}
+                  </Text>
                   <Text style={styles.unitText}>hr</Text>
                 </View>
               </View>
 
-              {/* Third Section: Calories */}
               <View style={styles.sectionLast}>
                 <FontAwesome5 name="fire-alt" size={35} color="orange" />
                 <Text> </Text>
                 <View style={styles.textContainer}>
-                  <Text style={styles.valueText}>1,5</Text>
+                  <Text style={styles.valueText}>
+                    {totalCalories.toFixed(2)}
+                  </Text>
                   <Text style={styles.unitText}>kcal</Text>
                 </View>
               </View>

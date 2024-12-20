@@ -21,6 +21,9 @@ import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo";
 
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
+
 // Fungsi untuk menghitung jarak menggunakan rumus Haversine
 const haversine = (coords1, coords2) => {
   const R = 6371; // Radius bumi dalam kilometer
