@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
 import { launchImageLibrary } from "react-native-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -25,43 +25,41 @@ const HomeScreen = ({ user }) => {
   const [totalDistance, setTotalDistance] = useState(0);
   const [totalCalories, setTotalCalories] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const weeklyGoal = 50; // Target mingguan dalam km
 
-  useEffect(() => {
-    const fetchTotals = async () => {
-      try {
-        const historyRef = collection(
-          FIREBASE_DB,
-          "users",
-          user.uid,
-          "history"
-        );
-        const q = query(historyRef);
-        const querySnapshot = await getDocs(q);
-        const historyData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+  const fetchTotals = async () => {
+    try {
+      const historyRef = collection(FIREBASE_DB, "users", user.uid, "history");
+      const q = query(historyRef);
+      const querySnapshot = await getDocs(q);
+      const historyData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-        let totalDist = 0;
-        let totalCal = 0;
-        let totalTime = 0;
+      let totalDist = 0;
+      let totalCal = 0;
+      let totalTime = 0;
 
-        historyData.forEach((item) => {
-          totalDist += item.distance || 0;
-          totalCal += item.calories || 0;
-          totalTime += item.time || 0;
-        });
+      historyData.forEach((item) => {
+        totalDist += item.distance || 0;
+        totalCal += item.calories || 0;
+        totalTime += item.time || 0;
+      });
 
-        setTotalDistance(totalDist);
-        setTotalCalories(totalCal);
-        setTotalTime(totalTime);
-      } catch (error) {
-        console.error("Error fetching totals: ", error);
-      }
-    };
+      setTotalDistance(totalDist);
+      setTotalCalories(totalCal);
+      setTotalTime(totalTime);
+    } catch (error) {
+      console.error("Error fetching totals: ", error);
+    }
+  };
 
-    fetchTotals();
-  }, [user.uid]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTotals();
+    }, [user.uid])
+  );
 
   const handleImageSelect = () => {
     launchImageLibrary({ mediaType: "photo", quality: 0.5 }, (response) => {
@@ -70,6 +68,8 @@ const HomeScreen = ({ user }) => {
       }
     });
   };
+
+  const progressPercentage = (totalDistance / weeklyGoal) * 100;
 
   return (
     <View style={styles.container}>
@@ -99,7 +99,9 @@ const HomeScreen = ({ user }) => {
           <View style={styles.goalHeader}>
             <View style={styles.HeadText}>
               <Text style={styles.goalText}>Week goal </Text>
-              <Text style={[styles.goalText, { color: "#5D63D1" }]}>50 km</Text>
+              <Text style={[styles.goalText, { color: "#5D63D1" }]}>
+                {weeklyGoal} km
+              </Text>
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate("Tracking")}
@@ -110,22 +112,26 @@ const HomeScreen = ({ user }) => {
           </View>
 
           <View style={styles.goalInfo}>
-            <Text style={styles.doneText}>35 km done</Text>
-            <Text style={styles.leftText}>15 km left</Text>
+            <Text style={styles.doneText}>
+              {totalDistance.toFixed(2)} km done
+            </Text>
+            <Text style={styles.leftText}>
+              {(weeklyGoal - totalDistance).toFixed(2)} km left
+            </Text>
           </View>
 
           <View style={styles.progressBarContainer}>
             <View
               style={[
                 styles.progressBar,
-                { width: `${(35 / 50) * 100}%`, backgroundColor: "#5D63D1" },
+                { width: `${progressPercentage}%`, backgroundColor: "#5D63D1" },
               ]}
             />
             <View
               style={[
                 styles.progressBar,
                 {
-                  width: `${100 - (35 / 50) * 100}%`,
+                  width: `${100 - progressPercentage}%`,
                   backgroundColor: "#d3d3d3",
                 },
               ]}

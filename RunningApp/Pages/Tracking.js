@@ -275,10 +275,10 @@ const Tracking = () => {
             </View>
           </View>
           <View>
-            <Text style={styles.detailText}>
-              Steps: {calculatePace().toFixed(2)}
-            </Text>
-            <Text style={styles.detailText}>Pace: {steps}</Text>
+            {/* <Text style={styles.detailText}>
+              Pace: {calculatePace().toFixed(2)}
+            </Text> */}
+            <Text style={styles.detailText}>Steps: {steps}</Text>
           </View>
         </View>
 
@@ -300,7 +300,7 @@ const Tracking = () => {
             <Text> </Text>
             <View style={styles.textContainer}>
               <Text style={styles.valueText}>{calculatePace().toFixed(2)}</Text>
-              <Text style={styles.unitText}>seconds</Text>
+              <Text style={styles.unitText}>min/km</Text>
             </View>
           </View>
 
