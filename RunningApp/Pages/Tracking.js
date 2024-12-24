@@ -24,6 +24,21 @@ import Entypo from "@expo/vector-icons/Entypo";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 
+// Define the background task
+const LOCATION_TASK_NAME = "background-location-task";
+
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+  if (error) {
+    console.error("Background location task error:", error);
+    return;
+  }
+  if (data) {
+    const { locations } = data;
+    // Handle the location updates here
+    console.log("Received new locations:", locations);
+  }
+});
+
 // Fungsi untuk menghitung jarak menggunakan rumus Haversine
 const haversine = (coords1, coords2) => {
   const R = 6371; // Radius bumi dalam kilometer
@@ -92,6 +107,16 @@ const Tracking = () => {
           return;
         }
 
+        // Request background location permissions
+        const backgroundStatus =
+          await Location.requestBackgroundPermissionsAsync();
+        if (backgroundStatus.status !== "granted") {
+          alert(
+            "Izin akses lokasi di latar belakang diperlukan untuk tracking"
+          );
+          return;
+        }
+
         locationSubscription = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.High,
@@ -114,6 +139,18 @@ const Tracking = () => {
             });
           }
         );
+
+        // Start background location tracking
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 1000,
+          distanceInterval: 1,
+          foregroundService: {
+            notificationTitle: "Tracking",
+            notificationBody:
+              "Your location is being tracked in the background",
+          },
+        });
       })();
     }
 
@@ -121,6 +158,7 @@ const Tracking = () => {
       if (locationSubscription) {
         locationSubscription.remove();
       }
+      Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     };
   }, [tracking]);
 

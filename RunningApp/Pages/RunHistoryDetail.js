@@ -55,7 +55,9 @@ const RunHistoryDetail = ({ route }) => {
               ).toLocaleDateString("en-US")}
             </Text>
             <Text style={styles.detailText}>Steps: {historyItem.steps}</Text>
-            <Text style={styles.detailText}>Pace: {historyItem.pace}</Text>
+            <Text style={styles.detailText}>
+              Pace: {(historyItem.pace || 0).toFixed(2)} min/km
+            </Text>
           </View>
         </View>
 

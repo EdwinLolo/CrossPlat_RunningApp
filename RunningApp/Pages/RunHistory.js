@@ -41,6 +41,9 @@ const RunHistory = ({ route }) => {
         ...doc.data(),
       }));
 
+      // Sort historyData by timestamp in descending order
+      historyData.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+
       setHistory(historyData);
 
       // Menghitung total distance, total calories, dan total time
