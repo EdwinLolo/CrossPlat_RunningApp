@@ -2,9 +2,11 @@ import React from "react";
 import { View, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const ProgressCard = () => {
+const ProgressCard = ({ totalDistance, totalCalories, totalTime }) => {
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", marginTop: -30 }}>
+    <View
+      style={{ justifyContent: "center", alignItems: "center", marginTop: -30 }}
+    >
       <View
         style={{
           backgroundColor: "#f0f0f0",
@@ -28,15 +30,15 @@ const ProgressCard = () => {
         >
           <View style={{ alignItems: "center" }}>
             <FontAwesome5 name="running" size={24} color="black" />
-            <Text>103,2 km</Text>
+            <Text>{totalDistance.toFixed(2)} km</Text>
           </View>
           <View style={{ alignItems: "center" }}>
             <FontAwesome5 name="stopwatch" size={24} color="black" />
-            <Text>16,9 hr</Text>
+            <Text>{(totalTime / 3600).toFixed(2)} hr</Text>
           </View>
           <View style={{ alignItems: "center" }}>
             <FontAwesome5 name="fire" size={24} color="red" />
-            <Text>1,5k kcal</Text>
+            <Text>{totalCalories.toFixed(2)} kcal</Text>
           </View>
         </View>
       </View>

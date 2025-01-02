@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     width: width * 0.87,
-    height: width * 0.55,
+    height: width * 0.45,
     borderWidth: 2,
     borderColor: "#AAC7D7",
     position: "absolute",
